@@ -10,8 +10,8 @@ const { title } = Astro.props;
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
@@ -19,10 +19,12 @@ const { title } = Astro.props;
 		<slot />
 	</body>
 </html>
+
 <style is:global>
 	:root {
 		--accent: 249, 83, 0;
-		--accent-gradient: linear-gradient(-60deg, var(--accent) 0%, rgb(240, 152, 25) 100%);
+		--accent-light: 240, 152, 25;
+		--accent-gradient: linear-gradient(90deg, rgb(var(--accent)), rgb(var(--accent-light)));
 		--bg-color: rgb(34, 34, 35);
 	}
 	html {

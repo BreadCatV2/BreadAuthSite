@@ -1,0 +1,39 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+
+export interface Props {
+	code: string;
+    message: string;
+    description: string;
+}
+const { code, message, description } = Astro.props;
+---
+
+<!--Simple Error 404 Page -->
+<MainLayout title={"Error " + code + " - " + message}>
+    <main>
+        <h1>{code}</h1>
+        <h2>{message}</h2>
+        <p>{description}</p>
+    </main>
+</MainLayout>
+
+<style>
+    main {
+		/*center everything*/
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+    }
+    /* the 404 is supposed to be orange gradient */
+    h1 {
+        font-size: 10rem;
+        color: #ff8c00;
+        background: -webkit-linear-gradient(rgb(var(--accent)), rgb(var(--accent-light)));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+</style>

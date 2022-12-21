@@ -1,0 +1,125 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+export interface Props {
+    name: string;
+    invite: string;
+    header: string;
+    pic: string;
+    desc: string;
+}
+
+const { name, invite, header, pic, desc } = Astro.props;
+---
+<!--- Discord Invite Widget, header is the header image, pic is the profile picture --->
+<div class="discord-widget">
+    <div class="discord-widget-header">
+        <img src={header} alt="Discord Header" />
+    </div>
+    <div class="discord-widget-content">
+        <div class="discord-widget-content-left">
+            <img src={pic} alt="Discord Profile Picture" />
+        </div>
+        <div class="discord-widget-content-right">
+            <h1>{name}</h1>
+            <p>{desc}</p>
+            <a href={"https://discorg.gg/"+invite} target="_blank" rel="noopener noreferrer">Join Now</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .discord-widget {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #2c2f33;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    .discord-widget-header {
+        width: 100%;
+        height: 200px;
+        background-color: #2c2f33;
+        overflow: hidden;
+    }
+    .discord-widget-header img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .discord-widget-content {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+    .discord-widget-content-left {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .discord-widget-content-left img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    .discord-widget-content-right {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+    .discord-widget-content-right h1 {
+        font-size: 30px;
+        font-weight: 700;
+        color: #fff;
+        margin: 0;
+    }
+    .discord-widget-content-right p {
+        font-size: 16px;
+        font-weight: 400;
+        color: #fff;
+        margin: 0;
+        text-align: center;
+    }
+    .discord-widget-content-right a {
+        font-size: 16px;
+        font-weight: 700;
+        color: #fff;
+        text-decoration: none;
+        background: var(--accent-gradient);
+        padding: 10px 20px;
+        border-radius: 5px;
+        margin-top: 20px;
+    }
+    .discord-widget-content-right a:hover {
+        /*give it an animated gradient background using keyframes and animation*/
+        background: var(--accent-gradient);
+        background-size: 200% auto;
+        animation: gradient 1s linear;
+    }
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+</style>

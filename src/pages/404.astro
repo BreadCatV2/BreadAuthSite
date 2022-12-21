@@ -1,32 +1,7 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Error from '../layouts/Error.astro';
 ---
 
 <!--Simple Error 404 Page -->
-<Layout title="Error 404">
-    <main>
-        <h1>404</h1>
-        <h2>Page Not Found</h2>
-        <p>Sorry, the page you are looking for could not be found.</p>
-    </main>
-</Layout>
+<Error code="404" message="OwO nothing here" description="Oy cunt, this page doesn't exist"></Error>
 
-<style>
-    main {
-		/*center everything*/
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        text-align: center;
-    }
-    /* the 404 is supposed to be orange gradient */
-    h1 {
-        font-size: 10rem;
-        color: rgb(255, 140, 0);
-        background: -webkit-linear-gradient(rgb(var(--accent-gradient)));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-</style>

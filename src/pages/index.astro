@@ -1,82 +1,48 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
+import MainLayout from '../layouts/MainLayout.astro';
+import Discord from '../components/Discord.astro';
 ---
 
-<Layout title="Welcome to Astro.">
+<MainLayout title="IamASaneIndividual.com">
 	<main>
-		<h1>Welcome to <span class="text-gradient">Astro</span></h1>
-		<p class="instructions">
-			To get started, open the directory <code>src/pages</code> in your project.<br />
-			<strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
-		</p>
-		<ul role="list" class="link-card-grid">
-			<Card
-				href="https://docs.astro.build/"
-				title="Documentation"
-				body="Learn how Astro works and explore the official API docs."
-			/>
-			<Card
-				href="https://astro.build/integrations/"
-				title="Integrations"
-				body="Supercharge your project with new frameworks and libraries."
-			/>
-			<Card
-				href="https://astro.build/themes/"
-				title="Themes"
-				body="Explore a galaxy of community-built starter themes."
-			/>
-			<Card
-				href="https://astro.build/chat/"
-				title="Community"
-				body="Come say hi to our amazing Discord community. ❤️"
-			/>
-		</ul>
+		<h1>BreadCat Site</h1>
+		<p>What the fuck do I put here</p>
+		<div class="discord">
+			<Discord name="Pet Rescue" 
+			invite="RG53CB9ykN" 
+			header="https://i.imgur.com/GMZYk6c.jpg" 
+			pic="http://blogs.nicholas.duke.edu/birds/files/2015/03/cute-cat-Imgur.jpg"
+			desc="Join our Pet Rescue Project for the newest Updates"/>
+		</div>
 	</main>
-</Layout>
+</MainLayout>
 
 <style>
 	main {
-		margin: auto;
-		padding: 1.5rem;
-		max-width: 60ch;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
-	h1 {
-		font-size: 3rem;
-		font-weight: 800;
-		margin: 0;
-	}
-	.text-gradient {
-		background-image: var(--accent-gradient);
+    h1 {
+        font-size: 9vw;
+        color: #ff8c00;
+        background: -webkit-linear-gradient(rgb(var(--accent)), rgb(var(--accent-light)));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+	p {
+		font-size: 2vw;
+		color: #ff8c00;
+		background: white;
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
-		background-size: 400%;
-		background-position: 0%;
+		/*move it closer to the h1*/
+		margin-top: -1rem;
 	}
-	.instructions {
-		line-height: 1.6;
-		margin: 1rem 0;
-		border: 1px solid rgba(var(--accent), 25%);
-		color: var(--bg-color);
-		background-color: white;
-		padding: 1rem;
-		border-radius: 0.4rem;
-	}
-	.instructions code {
-		font-size: 0.875em;
-		font-weight: bold;
-		background: rgba(var(--accent), 12%);
-		color: rgb(var(--accent));
-		border-radius: 4px;
-		padding: 0.3em 0.45em;
-	}
-	.instructions strong {
-		color: rgb(var(--accent));
-	}
-	.link-card-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
-		gap: 1rem;
-		padding: 0;
+	/*make the discord div fit the screen by 50%*/
+	.discord {
+		width: 40%;
+		/*give it a little padding*/
+		padding: 3vw;
 	}
 </style>
