@@ -15,7 +15,7 @@ const { title, description } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
 		<meta content={title} property="og:title" />
-		<meta content="Site Description" property="og:description" />
+		<meta content={description} property="og:description" />
 		<meta content={Astro.url} property="og:url" />
 		<meta content="https://i.imgur.com/4clqUdj.jpg" property="og:image" />
 		<title>{title}</title>
