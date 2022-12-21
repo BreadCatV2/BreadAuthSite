@@ -11,7 +11,7 @@ import Discord from '../components/Discord.astro';
 			<Discord name="Pet Rescue" 
 			invite="RG53CB9ykN" 
 			header="https://i.imgur.com/GMZYk6c.jpg" 
-			pic="http://blogs.nicholas.duke.edu/birds/files/2015/03/cute-cat-Imgur.jpg"
+			pic="https://i.imgur.com/cb7w4lU.jpeg"
 			desc="Join our Pet Rescue Project for the newest Updates"/>
 		</div>
 	</main>
@@ -40,6 +40,18 @@ import Discord from '../components/Discord.astro';
 	}
 	.discord {
 		width: 40%;
-		padding: 3vw;
+		padding: 3rem;
 	}
+	@media (max-width: 768px) {
+		h1 {
+			font-size: 15vw;
+		}
+		p {
+			font-size: 5vw;
+		}
+		.discord {
+			width: 90%;
+		}
+	}
+
 </style>
