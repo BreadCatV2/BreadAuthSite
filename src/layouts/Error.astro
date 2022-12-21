@@ -9,7 +9,6 @@ export interface Props {
 const { code, message, description } = Astro.props;
 ---
 
-<!--Simple Error 404 Page -->
 <MainLayout title={"Error " + code + " - " + message}>
     <main>
         <h1>{code}</h1>
@@ -20,7 +19,6 @@ const { code, message, description } = Astro.props;
 
 <style>
     main {
-		/*center everything*/
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -28,7 +26,6 @@ const { code, message, description } = Astro.props;
         height: 100vh;
         text-align: center;
     }
-    /* the 404 is supposed to be orange gradient */
     h1 {
         font-size: 10rem;
         color: #ff8c00;
