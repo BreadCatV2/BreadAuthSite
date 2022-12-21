@@ -1,9 +1,10 @@
 ---
 export interface Props {
 	title: string;
+	description: string;
 }
 
-const { title } = Astro.props;
+const { title, description } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -13,6 +14,10 @@ const { title } = Astro.props;
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
+		<meta content={title} property="og:title" />
+		<meta content="Site Description" property="og:description" />
+		<meta content={Astro.url} property="og:url" />
+		<meta content="https://i.imgur.com/4clqUdj.jpg" property="og:image" />
 		<title>{title}</title>
 	</head>
 	<body>

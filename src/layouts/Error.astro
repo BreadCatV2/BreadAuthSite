@@ -9,7 +9,7 @@ export interface Props {
 const { code, message, description } = Astro.props;
 ---
 
-<MainLayout title={"Error " + code + " - " + message}>
+<MainLayout title={"Error " + code + " - " + message} description={description}>
     <main>
         <h1>{code}</h1>
         <h2>{message}</h2>
