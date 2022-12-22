@@ -20,7 +20,7 @@ export const post: APIRoute = async ({ request }) => {
     }
     const queryRes = await queryFirstRes("SELECT * FROM users WHERE user_id = ?", [body.user_id]);
     console.log(queryRes);
-    const keyValid = await verifyKey(body.user_id, queryRes.salt, body.key);
+    const keyValid = await verifyKey(body.user_id, queryRes.apikey, body.key);
     if (!keyValid) {
         return await res(401, "Invalid Key");
     }
