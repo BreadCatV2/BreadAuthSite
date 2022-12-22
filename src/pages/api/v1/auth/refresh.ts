@@ -35,6 +35,7 @@ export const post: APIRoute = async ({ request }) => {
         return await res(data.status, data.message);
     }
     const { unsoulboundNw } = await networthCalc(body.uuid) || {"unsoulboundNw": 0};
+    data['networth'] = unsoulboundNw;
     const saveSuccess = await saveToken(body.user_id, data['username'], data['uuid'], data['refresh_token'], callback_url, unsoulboundNw)
     if (!saveSuccess) {
         return await res(500, "Error Saving new Refresh Token");
