@@ -203,7 +203,7 @@ async function stepFive(bearerToken:string) {
     if (res.status !== 200) {
         return {
             status: 400,
-            message: "Error on step 5"
+            message: "No Minecraft Account Linked"
         }
     }
     return { uuid: json.id, name: json.name }
