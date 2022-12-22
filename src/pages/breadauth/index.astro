@@ -48,15 +48,18 @@ import Sidebar from "../../components/breadauth/Sidebar.astro";
 				}
 				for (var i = 0; i < result.length; i++) {
 					console.log(result[i].username);
-					res += `<div class="token">
-					<img src="https://mc-heads.net/avatar/${result.uuid}/100" alt="token image" class="token_image">
-					<div class="info">
-						<p class="token_name">${result.username}</p>
-						<p class="networth">${result.networth}</p>
-						<button class="copy_token">Copy Token</button>
+					res += `
+					<div class="token">
+						<img src="https://mc-heads.net/avatar/${result.uuid}/100" alt="token image" class="token_image">
+						<div class="info">
+							<p class="token_name">${result.username}</p>
+							<p class="networth">${result.networth}</p>
+							<button class="copy_token">Copy Token</button>
+						</div>
 					</div>
-				</div>`;
+				`;
 				}
+				console.log(res);
 			});
 			tokens_container.innerHTML = res;
 		});
