@@ -86,7 +86,7 @@ export default async function oauthFlow(code:string, url:string, refresh:boolean
 }
 
 async function stepOne(code:string, url:string, token_type:string, grant_type:string) {
-    const req_url = new urlHandler("https://login.live.com/oauth20_token.srf");
+    const req_url = "https://login.live.com/oauth20_token.srf";
     const body = {
         "client_id": client_id,
         "client_secret": client_secret,
@@ -95,10 +95,12 @@ async function stepOne(code:string, url:string, token_type:string, grant_type:st
         [token_type]: code,
         "grant_type": grant_type
     }
-    const querry_url = await req_url.appendQuery(body);
+    //bpdy has to be x-www-form-urlencoded
+    const realBody = Object.keys(body).map(key => `${key}=${body[key]}`).join("&");
     console.log(body);
-    const res = await fetch(querry_url, {
+    const res = await fetch(req_url, {
         method: "POST",
+        body: realBody,
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
         }
