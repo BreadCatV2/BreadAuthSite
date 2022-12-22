@@ -4,6 +4,7 @@ import isJson from "../../../../../libs/checkJson";
 import { query } from "../../../../../libs/db/actions/query";
 
 export const post: APIRoute = async ({ request }) => {
+    try {
     if (!(await isJson(request))) {
         return await res(400, "Invalid Body");
     }
@@ -30,6 +31,10 @@ export const post: APIRoute = async ({ request }) => {
             "Content-Type": "application/json"
         }
     })
+    } catch (e) {
+        console.error(e);
+        return await res(500, "Internal Server Error");
+    }
 }
 
 async function res(status:number, message:string) {
