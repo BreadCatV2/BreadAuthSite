@@ -85,7 +85,7 @@ export default async function oauthFlow(code:string, url:string, refresh:boolean
 }
 
 async function stepOne(code:string, url:string, token_type:string, grant_type:string) {
-    const req_url = "'https://login.live.com/oauth20_token.srf";
+    const req_url = "https://login.live.com/oauth20_token.srf";
     const body = {
         "client_id": client_id,
         "client_secret": client_secret,
