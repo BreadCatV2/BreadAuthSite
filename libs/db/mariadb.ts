@@ -26,5 +26,7 @@ const pool = mariadb.createPool({
 });
 
 export default async function getConnection() {
+    console.log('Getting DB connection');
+    console.log('Pool status: ', pool.totalConnections);
     return await pool.getConnection();
 }
