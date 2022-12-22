@@ -22,7 +22,7 @@ const pool = mariadb.createPool({
     user: user,
     password: password,
     database: dbName,
-    connectionLimit: 500
+    connectionLimit: 10
 });
 
 export default async function getConnection() {
