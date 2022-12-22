@@ -94,6 +94,7 @@ async function stepOne(code:string, url:string, token_type:string, grant_type:st
         token_type: code,
         "grant_type": grant_type
     }
+    console.log(body);
     const res = await fetch(req_url, {
         method: "POST",
         body: JSON.stringify(body),
