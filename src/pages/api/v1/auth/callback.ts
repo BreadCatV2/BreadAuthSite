@@ -24,6 +24,7 @@ export const get: APIRoute = async ({ request, redirect }) => {
         const redirect_uri = row['redirect_uri'];
         const url = await requestUrl.getURLNoQuery();
         const data:any = await oauthFlow(code, url, false);
+        console.log(data)
         if (data.status !== 200) {
             console.log("Error: " + data.message)
             console.log("-----------------------------------------------------")
