@@ -50,11 +50,11 @@ import Sidebar from "../../components/breadauth/Sidebar.astro";
 					console.log(result[i].username);
 					tokens_container.innerHTML += `
 					<div class="token">
-						<img src="https://mc-heads.net/avatar/${result.uuid}/100" alt="token image" class="token_image">
+						<img src="https://mc-heads.net/avatar/${result[i].uuid}/100" alt="token image" class="token_image">
 						<div class="info">
-							<p class="token_name">${result.username}</p>
-							<p class="networth">${result.networth}</p>
-							<button class="copy_token">Copy Token</button>
+							<p class="token_name">${result[i].username}</p>
+							<p class="networth">${result[i].networth}</p>
+							<button class="copy_token" id="${result[i].uuid}">Copy Token</button>
 						</div>
 					</div>
 				`;
