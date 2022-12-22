@@ -1,4 +1,4 @@
-const getNetworth = require('skyhelper-networth')
+import { getNetworth } from "skyhelper-networth"
 import networthParser from "./utils/networthParser.js";
 const apiKey:string = "df263150-616a-4977-8abd-1c3c5fd16cbb"
 
