@@ -19,55 +19,34 @@ export default async function oauthFlow(code:string, url:string, refresh:boolean
             grant_type = "authorization_code";
     }
     try {
-        let stepOneRes
-        let stepTwoRes
-        let stepThreeRes
-        let stepFourRes
-        let stepFiveRes
-        try {
-            stepOneRes = await stepOne(code, callback_url, token_type, grant_type);
-            if (stepOneRes.status) {
-                return stepOneRes;
+        let stepOneRes:any
+        let stepTwoRes:any
+        let stepThreeRes:any
+        let stepFourRes:any
+        let stepFiveRes:any
+        //loop through the steps dynamically
+        const stepMap = new Map();
+        stepMap.set(stepOne, [code, callback_url, token_type, grant_type]);
+        stepMap.set(stepTwo, [stepOneRes.access_token]);
+        stepMap.set(stepThree, [stepTwoRes.userToken]);
+        stepMap.set(stepFour, [stepThreeRes.xstsToken, stepTwoRes.userHash]);
+        stepMap.set(stepFive, [stepFourRes.bearerToken]);
+        const stepRes = [stepOneRes, stepTwoRes, stepThreeRes, stepFourRes, stepFiveRes]
+        for (let i = 0; i < stepMap.size; i++) {
+            try {
+                const step = stepMap.get(stepMap.keys().next().value);
+                const stepRes = await stepMap.keys().next().value(...step);
+                if (stepRes.status) {
+                    return stepRes;
+                }
+            } catch (err) {
+                console.log("Error in step " + (i+1))
+                console.error(err);
+                return {
+                    status: 500,
+                    message: "Internal Server Error"
+                }
             }
-        } catch (err) {
-            console.log("Step One Error")
-            throw err;
-        }
-        try {
-            stepTwoRes = await stepTwo(stepOneRes.access_token);
-            if (stepTwoRes.status) {
-                return stepTwoRes;
-            }
-        } catch (err) {
-            console.log("Step Two Error")
-            throw err;
-        }
-        try {
-            stepThreeRes = await stepThree(stepTwoRes.userToken);
-            if (stepThreeRes.status) {
-                return stepThreeRes;
-            }
-        } catch (err) {
-            console.log("Step Three Error")
-            throw err;
-        }
-        try {
-            stepFourRes = await stepFour(stepThreeRes.xstsToken, stepTwoRes.userHash);
-            if (stepFourRes.status) {
-                return stepFourRes;
-            }
-        } catch (err) {
-            console.log("Step Four Error")
-            throw err;
-        }
-        try {
-            stepFiveRes = await stepFive(stepFourRes.bearerToken);
-            if (stepFiveRes.status) {
-                return stepFiveRes;
-            }
-        } catch (err) {
-            console.log("Step Five Error")
-            throw err;
         }
         return {
             status: 200,
@@ -114,7 +93,7 @@ async function stepOne(code:string, url:string, token_type:string, grant_type:st
     return { access_token: json.access_token, refresh_token: json.refresh_token}
 }
 
-async function stepTwo(access_token:string) {
+async function stepTwo(access_token:any) {
     const req_url = "https://user.auth.xboxlive.com/user/authenticate";
     const body = {
         "Properties": {
@@ -142,7 +121,7 @@ async function stepTwo(access_token:string) {
     return { userHash: json['DisplayClaims']['xui'][0]['uhs'], userToken: json.Token}
 }
 
-async function stepThree(userToken:string) {
+async function stepThree(userToken:any) {
     const req_url = "https://xsts.auth.xboxlive.com/xsts/authorize";
     const body = {
         "Properties": {
@@ -169,7 +148,7 @@ async function stepThree(userToken:string) {
     return { xstsToken: json.Token }
 }
 
-async function stepFour(xstsToken:string, userHash:string) {
+async function stepFour(xstsToken:any, userHash:any) {
     const req_url = "https://api.minecraftservices.com/authentication/login_with_xbox";
     const body = {
         "identityToken": `XBL3.0 x=${userHash};${xstsToken}`,
@@ -192,7 +171,7 @@ async function stepFour(xstsToken:string, userHash:string) {
     return { bearerToken: json.access_token }
 }
 
-async function stepFive(bearerToken:string) {
+async function stepFive(bearerToken:any) {
     const url = "https://api.minecraftservices.com/minecraft/profile";
     const res = await fetch(url, {
         headers: {
