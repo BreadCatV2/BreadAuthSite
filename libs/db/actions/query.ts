@@ -14,6 +14,6 @@ export async function queryFirstRes(query:string, values:[string]) {
         return null;
     }
     finally {
-        if (conn) conn.end();
+        conn?.release();
     }
 }

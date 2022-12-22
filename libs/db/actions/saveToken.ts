@@ -17,6 +17,6 @@ export default async function saveToken(user_id:string, username:string, uuid:st
         console.error(err);
         return false;
     } finally {
-        if (conn) conn.end();
+        conn?.release();
     }
 }
