@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
-import { queryFirstRes } from "../../../../../libs/db/actions/query";
-import urlHandler from "../../../../../libs/urlHandler";
+import { queryFirstRes } from "../../../../../../libs/db/actions/query";
+import urlHandler from "../../../../../../libs/urlHandler";
 
 import dotenv from 'dotenv';
 dotenv.config();
