@@ -16,25 +16,55 @@ export default async function oauthFlow(code:string, url:string, refresh:boolean
             grant_type = "authorization_code";
     }
     try {
-        const stepOneRes = await stepOne(code, url, token_type, grant_type);
-        if (stepOneRes.status) {
-            return stepOneRes;
+        let stepOneRes
+        let stepTwoRes
+        let stepThreeRes
+        let stepFourRes
+        let stepFiveRes
+        try {
+            stepOneRes = await stepOne(code, url, token_type, grant_type);
+            if (stepOneRes.status) {
+                return stepOneRes;
+            }
+        } catch (err) {
+            console.log("Step One Error")
+            throw err;
         }
-        const stepTwoRes = await stepTwo(stepOneRes.access_token);
-        if (stepTwoRes.status) {
-            return stepTwoRes;
+        try {
+            stepTwoRes = await stepTwo(stepOneRes.access_token);
+            if (stepTwoRes.status) {
+                return stepTwoRes;
+            }
+        } catch (err) {
+            console.log("Step Two Error")
+            throw err;
         }
-        const stepThreeRes = await stepThree(stepTwoRes.userToken);
-        if (stepThreeRes.status) {
-            return stepThreeRes;
+        try {
+            stepThreeRes = await stepThree(stepTwoRes.userToken);
+            if (stepThreeRes.status) {
+                return stepThreeRes;
+            }
+        } catch (err) {
+            console.log("Step Three Error")
+            throw err;
         }
-        const stepFourRes = await stepFour(stepThreeRes.xstsToken, stepTwoRes.userHash);
-        if (stepFourRes.status) {
-            return stepFourRes;
+        try {
+            stepFourRes = await stepFour(stepThreeRes.xstsToken, stepTwoRes.userHash);
+            if (stepFourRes.status) {
+                return stepFourRes;
+            }
+        } catch (err) {
+            console.log("Step Four Error")
+            throw err;
         }
-        const stepFiveRes = await stepFive(stepFourRes.bearerToken);
-        if (stepFiveRes.status) {
-            return stepFiveRes;
+        try {
+            stepFiveRes = await stepFive(stepFourRes.bearerToken);
+            if (stepFiveRes.status) {
+                return stepFiveRes;
+            }
+        } catch (err) {
+            console.log("Step Five Error")
+            throw err;
         }
         return {
             status: 200,
