@@ -5,9 +5,10 @@ import { queryFirstRes } from "../../../../../libs/db/actions/query";
 import saveToken from "../../../../../libs/db/actions/saveToken";
 import oauthFlow from "../../../../../libs/microsoft/oauthFlow";
 import networthCalc from "../../../../../libs/hypixel/networthCalc";
+import checkUser from "../../../../../libs/auth/checkUser";
 
 export const post: APIRoute = async ({ request }) => {
-    if (!isJson) {
+    if (!await (isJson(request))) {
         return await res(400, "Invalid Body");
     }
     const body = await request.json();
@@ -19,12 +20,10 @@ export const post: APIRoute = async ({ request }) => {
             return await res(400, "Body Missing " + key);
         }
     }
-    const queryResUsers = await queryFirstRes("SELECT * FROM users WHERE user_id = ?", [body.user_id]);
-    const queryResTokens = await queryFirstRes("SELECT * FROM tokens WHERE user_id = ? AND uuid = ?", [body.user_id, body.uuid]);
-    const keyValid = await verifyKey(body.user_id, queryResUsers.apikey, body.key);
-    if (!keyValid) {
+    if (!await checkUser(body.key, body.user_id)) {
         return await res(401, "Invalid Key");
     }
+    const queryResTokens = await queryFirstRes("SELECT * FROM tokens WHERE user_id = ? AND uuid = ?", [body.user_id, body.uuid]);
     if (queryResTokens.uuid !== body.uuid) {
         return await res(400, "UUID not in database");
     }

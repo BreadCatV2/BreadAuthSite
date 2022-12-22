@@ -17,3 +17,18 @@ export async function queryFirstRes(query:string, values:string[]) {
         conn?.release();
     }
 }
+
+export async function query(query:string, values:string[]) {
+    let conn;
+    try {
+        conn = await getConnection();
+        const rows = await conn.query(query, values);
+        return rows;
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+    finally {
+        conn?.release();
+    }
+}
