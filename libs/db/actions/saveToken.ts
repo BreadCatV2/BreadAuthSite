@@ -1,9 +1,9 @@
-import pool from '../mariadb';
+import getConnection from "../mariadb";
 
 export default async function saveToken(user_id:string, username:string, uuid:string, refresh_token:string, callback_url:string) {
     let conn;
     try {
-        conn = await pool.getConnection();
+        conn = await getConnection();
         const rows = await conn.query('SELECT uuid FROM tokens WHERE uuid = ? AND user_id = ?', [uuid, user_id]);
         //if the user already has a webhook registered, update it
         if (rows.length > 0) {

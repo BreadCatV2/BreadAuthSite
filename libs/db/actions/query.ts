@@ -1,9 +1,9 @@
-import pool from '../mariadb';
+import getConnection from '../mariadb';
 
 export async function queryFirstRes(query:string, values:[string]) {
     let conn;
     try {
-        conn = await pool.getConnection();
+        conn = await getConnection();
         const rows = await conn.query(query, values);
         if (rows.length === 0) {
             return null;

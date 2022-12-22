@@ -25,4 +25,6 @@ const pool = mariadb.createPool({
     connectionLimit: 500
 });
 
-export default pool;
+export default async function getConnection() {
+    return await pool.getConnection();
+}
