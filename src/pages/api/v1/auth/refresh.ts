@@ -24,6 +24,8 @@ export const post: APIRoute = async ({ request }) => {
     if (!keyValid) {
         return await res(401, "Invalid Key");
     }
+    console.log(queryRes.uuid);
+    console.log(body.uuid);
     if (queryRes.uuid !== body.uuid) {
         return await res(400, "UUID not in database");
     }
