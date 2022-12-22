@@ -37,11 +37,7 @@ export const post: APIRoute = async ({ request }) => {
     if (!saveSuccess) {
         return await res(500, "Error Saving new Refresh Token");
     }
-    return new Response(JSON.stringify({
-        message: "Success",
-        status: 200,
-        data: data
-    }), {
+    return new Response(JSON.stringify(data), {
         status: 200,
         headers: {
             "Content-Type": "application/json"
