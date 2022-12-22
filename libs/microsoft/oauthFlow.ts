@@ -69,6 +69,7 @@ export default async function oauthFlow(code:string, url:string, refresh:boolean
             console.log("Step Five Error")
             throw err;
         }
+        console.log(stepOneRes, stepTwoRes, stepThreeRes, stepFourRes, stepFiveRes)
         return {
             status: 200,
             message: "Success",
