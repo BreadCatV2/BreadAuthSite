@@ -1,6 +1,6 @@
 import getConnection from '../mariadb';
 
-export async function queryFirstRes(query:string, values:[string]) {
+export async function queryFirstRes(query:string, values:string[]) {
     let conn;
     try {
         conn = await getConnection();

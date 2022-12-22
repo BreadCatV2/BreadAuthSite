@@ -19,7 +19,7 @@ export const post: APIRoute = async ({ request }) => {
         }
     }
     const queryResUsers = await queryFirstRes("SELECT * FROM users WHERE user_id = ?", [body.user_id]);
-    const queryResTokens = await queryFirstRes("SELECT * FROM tokens WHERE user_id = ?", [body.user_id]);
+    const queryResTokens = await queryFirstRes("SELECT * FROM tokens WHERE user_id = ? AND uuid = ?", [body.user_id, body.uuid]);
     const keyValid = await verifyKey(body.user_id, queryResUsers.apikey, body.key);
     if (!keyValid) {
         return await res(401, "Invalid Key");
