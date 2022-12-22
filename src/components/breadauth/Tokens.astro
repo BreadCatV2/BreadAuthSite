@@ -1,0 +1,97 @@
+---
+
+---
+
+<!-- a Box in the middle of the screen -->
+<div class="token_container">
+    <div class="token">
+        <div class="token_header">
+            <div class="token_header_title">Token</div>
+            <div class="token_header_close">X</div>
+        </div>
+        <div class="token_body">
+            <div class="token_body_title">Token</div>
+        </div>
+        <div class="token_footer">
+            <div class="token_footer_title">Token</div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .token_container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+    }
+    .token {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 400px;
+        height: 300px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    .token_header {
+        position: relative;
+        width: 100%;
+        height: 50px;
+        background-color: #f1f1f1;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+    .token_header_title {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .token_header_close {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .token_body {
+        position: relative;
+        width: 100%;
+        height: 200px;
+        background-color: #fff;
+    }
+    .token_body_title {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .token_footer {
+        position: relative;
+        width: 100%;
+        height: 50px;
+        background-color: #f1f1f1;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+    .token_footer_title {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 20px;
+        font-weight: bold;
+    }
+</style>

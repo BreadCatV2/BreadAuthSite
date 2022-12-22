@@ -8,30 +8,43 @@
         <button id="set_key">Use API-Key</button>
     </div>
     <div class="nav__item">
-        <a href="#settings">Settings</a>
-    </div>
-    <div class="nav__item">
-        <a href="#tokens">Tokens</a>
+        <!-- add a dropdown to select how many tokens to fetch -->
+        <select id="token_count">
+            <option value="1">1</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+        <button id="fetch_data">Fetch Tokens</button>
     </div>
 
     <!-- when the Use API-Key button gets clicked save the api key in a cookie -->
     <script type="text/javascript">
         if (document.cookie.indexOf("api_key") >= 0) {
+            try {
             //the cookie is a json string, so we need to parse it
             var cookie = document.cookie.split(";")
             var api_key = cookie[0].split("=")[1];
             var user_id = cookie[1].split("=")[1];
+            document.getElementById("user_id_input").value = user_id;
+            document.getElementById("api_key_input").value = api_key;
+            } catch (e) {
+            }
         }
         document.getElementById("set_key").addEventListener("click", function() {
             var user_id = document.getElementById("user_id_input").value;
             var key = document.getElementById("api_key_input").value;
-            document.cookie = "api_key=" + key + ";user_id=" + user_id;
+            document.cookie = "api_key=" + key + "&user_id=" + user_id + ";sameSite=strict";
+            console.log(document.cookie)
             alert("API-Key set!");
         });
     </script>
 </div>
 
 <style>
+    /*sidebar should scroll with the page, if the component is loaded it should limit the size of the page to minus the sidebar width*/
     .nav {
         display: flex;
         flex-direction: column;
@@ -39,12 +52,11 @@
         height: 100%;
         background-color: var(--bg-color-light);
         padding: 20px;
-        position: absolute;
+        position: fixed;
         right: 0;
         top: 0;
         bottom: 0;
         align-items: center;
-
     }
     .nav__item {
         margin-bottom: 10px;
@@ -103,6 +115,17 @@
     /* on click remove the shadow */
     .nav__item button:active {
         box-shadow: none;
+    }
+    .nav__item select {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #fff;
+        color: black;
+        text-align: center;
     }
 
 </style>

@@ -32,7 +32,7 @@ import Sidebar from "../../components/breadauth/Sidebar.astro";
 			}
 			//fetch the data from the api
 			let res;
-			const data = fetch("https://breadcat.cc/api/v1/tokens", {
+			fetch("https://breadcat.cc/api/v1/tokens", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
