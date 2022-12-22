@@ -11,6 +11,7 @@ export async function queryFirstRes(query:string, values:[string]) {
         }
         return rows[0];
     } catch (err) {
+        console.error(err);
         return null;
     }
     finally {
