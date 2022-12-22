@@ -8,7 +8,7 @@ import urlHandler from "../../../../../libs/urlHandler";
 
 export const get: APIRoute = async ({ request, redirect }) => {
     try{
-        const requestUrl = new urlHandler(request.url);
+        const requestUrl = new urlHandler(request.url.replace('http://', 'https://'));
         const query:any = await requestUrl.getQuery();
         if (!["code", "state"].every((key) => query.hasOwnProperty(key))) {
             return await res(400, "Code or State Parameter Missing");
