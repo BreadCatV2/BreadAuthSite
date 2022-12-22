@@ -24,6 +24,9 @@ export const post: APIRoute = async ({ request }) => {
     if (!await checkUser(body.key, body.user_id)) {
         return await res(401, "Invalid Key");
     }
+    if (typeof body.entries === "string") {
+        body.entries = parseInt(body.entries);
+    }
     const queryRes = await query("SELECT refresh_token, username, uuid, networth FROM tokens WHERE user_id = ? ORDER BY id DESC LIMIT ?", [body.user_id, body.entries]);
     // response is a collection of objects
     return new Response(JSON.stringify(queryRes), {
