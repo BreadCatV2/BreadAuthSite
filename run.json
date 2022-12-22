@@ -1,13 +1,13 @@
 {
     "apps" : [
-    {
-      "name": "Site",
-      "script": ".dist/server/entry.js",
-      "watch": true,
-      "env": {
-            "HOST": "0.0.0.0",
-            "PORT": 6900
-      }
-    }
-]
+        {
+        "name": "Site",
+        "script": ".dist/server/entry.js",
+        "watch": true,
+        "env": {
+                "HOST": "0.0.0.0",
+                "PORT": 6900
+        }
+        }
+    ]
 }
