@@ -1,7 +1,8 @@
 //import mariadb
 import mariadb from 'mariadb';
 
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 const host = process.env.DB_HOST;
 const port = process.env.DB_PORT;
 const dbName = process.env.DB_NAME;

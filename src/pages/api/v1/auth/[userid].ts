@@ -2,7 +2,8 @@ import type { APIRoute } from "astro";
 import { queryFirstRes } from "../../../../../libs/db/actions/query";
 import urlHandler from "../../../../../libs/urlHandler";
 
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 const clientId = process.env.CLIENT_ID;
 
 export const get: APIRoute = async ({ params, request, redirect }) => {
