@@ -101,6 +101,7 @@ async function stepOne(code:string, url:string, token_type:string, grant_type:st
             "Content-Type": "application/json"
         }
     });
+    console.log(res);
     const json = await res.json();
     if (json.error) {
         return {
