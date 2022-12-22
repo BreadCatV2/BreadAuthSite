@@ -1,6 +1,6 @@
-export default async function isJson(request: Request){
+export default async function isJson(body:string){
     try {
-        request.json();
+        JSON.parse(body);
     } catch (e) {
         return false;
     }

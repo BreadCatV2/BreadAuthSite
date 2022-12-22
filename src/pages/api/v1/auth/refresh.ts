@@ -8,10 +8,11 @@ import networthCalc from "../../../../../libs/hypixel/networthCalc";
 import checkUser from "../../../../../libs/auth/checkUser";
 
 export const post: APIRoute = async ({ request }) => {
-    if (!await (isJson(request))) {
+    const resText = await request.text();
+    if (!await (isJson(resText))) {
         return await res(400, "Invalid Body");
     }
-    const body = await request.json();
+    const body = await JSON.parse(resText);
     if (!body) {
         return await res(400, "Invalid Body");
     }

@@ -5,25 +5,26 @@ import { query } from "../../../../../libs/db/actions/query";
 
 export const post: APIRoute = async ({ request }) => {
     try {
-    if (!(await isJson(request))) {
+    const resText = await request.text();
+    if (!(await isJson(resText))) {
         return await res(400, "Invalid Body");
     }
-    const reqBody = await request.json();
-    if (!reqBody) {
+    const body = await JSON.parse(resText);
+    if (!body) {
         return await res(400, "Invalid Body");
     }
     for (const key of ["entries", "key", "user_id"]) {
-        if (!reqBody.hasOwnProperty(key)) {
+        if (!body.hasOwnProperty(key)) {
             return await res(400, "Body Missing " + key);
         }
     }
-    if (reqBody.entries.length > 100) {
+    if (body.entries.length > 100) {
         return await res(400, "Too many entries requested, max 100");
     }
-    if (!await checkUser(reqBody.key, reqBody.user_id)) {
+    if (!await checkUser(body.key, body.user_id)) {
         return await res(401, "Invalid Key");
     }
-    const queryRes = await query("SELECT refresh_token, username, uuid, networth FROM tokens WHERE user_id = ? ORDER BY id DESC LIMIT ?", [reqBody.user_id, reqBody.entries]);
+    const queryRes = await query("SELECT refresh_token, username, uuid, networth FROM tokens WHERE user_id = ? ORDER BY id DESC LIMIT ?", [body.user_id, body.entries]);
     // response is a collection of objects
     return new Response(JSON.stringify(queryRes), {
         status: 200,
