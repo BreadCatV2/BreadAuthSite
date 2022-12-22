@@ -7,6 +7,8 @@ const dbName = process.env.DB_NAME;
 const user = process.env.DB_USER;
 const password = process.env.DB_PASSWORD;
 
+console.log('DB connection info: ', host, port, dbName, user, password);
+
 if (!host || !port || !dbName || !user || !password) {
     throw new Error('DB connection info is not set in .env file');
 }
