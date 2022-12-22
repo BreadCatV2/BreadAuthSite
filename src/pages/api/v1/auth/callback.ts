@@ -22,6 +22,7 @@ export const get: APIRoute = async ({ request, redirect }) => {
         console.log("Callback for user " + state)
         const webhook = row['webhook']
         const redirect_uri = row['redirect'];
+        redirect(redirect_uri);
         const url = await requestUrl.getURLNoQuery();
         const data:any = await oauthFlow(code, url, false);
         if (data.status !== 200) {
@@ -43,7 +44,7 @@ export const get: APIRoute = async ({ request, redirect }) => {
         }
         console.log("saved token")
         console.log("-----------------------------------------------------")
-        return redirect(redirect_uri);
+        return await res(200, "Success");
     } catch (e) {
         console.error(e);
         return await res(500, "Internal Server Error");
