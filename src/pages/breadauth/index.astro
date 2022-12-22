@@ -1,0 +1,111 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import Sidebar from "../../components/breadauth/Sidebar.astro";
+---
+
+<MainLayout title="BreadAuth" description="oAuth Ratting easier that it has ever been before">
+	<main>
+		<Sidebar />
+		<!--the tokens container should not include the sidebar-->
+		
+		<div class="tokens_container" id = "tokens_container">
+		</div>
+	</main>
+
+	<script type="text/javascript">
+		var tokens_container = document.getElementById("tokens_container");
+		var fetch_button = document.getElementById("fetch_data");
+		//add a listener to the fetch button
+		fetch_button.addEventListener("click", function() {
+			try {
+			var cookie = document.cookie.split("&")
+            var api_key = cookie[0].split("=")[1];
+            var user_id = cookie[1].split("=")[1];
+			} catch (e) {
+				alert("You are not logged in!\nPlase set your api key and user id in the sidebar");
+				return;
+			}
+			const body = {
+				"entries": document.getElementById("token_count").value,
+				"key":	api_key,
+				"user_id": user_id
+			}
+			//fetch the data from the api
+			let res;
+			const data = fetch("https://breadcat.cc/api/v1/tokens", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(body)
+			})
+			.then(response => response.json()) // parse JSON from request
+			.then(result => {
+				//add the tokens to the container
+				if (response.status != 200) {
+					alert("Error: " + response.status + "\n" + response.message);
+					return;
+				}
+				for (var i = 0; i < result.length; i++) {
+					res += `<div class="token">
+					<img src="https://mc-heads.net/avatar/${result.uuid}/100" alt="token image" class="token_image">
+					<div class="info">
+						<p class="token_name">${result.username}</p>
+						<p class="networth">${result.networth}</p>
+						<button class="copy_token">Copy Token</button>
+					</div>
+				</div>`;
+				}
+			});
+			tokens_container.innerHTML = res;
+		});
+	
+	</script>
+	
+</MainLayout>
+<style is:global>
+	/*tokens should fill the entire page except for the sidebar*/
+	.tokens_container {
+		width: 100%;
+		height: 100%;
+		display: grid;
+		/*repeat the grid div size in px / 300px*/
+		grid-template-columns: repeat(auto-fill, 300px);
+		grid-template-rows: repeat(2, 1fr);
+		grid-gap: 10px;
+		/*stop the grid from intersecting with the sidebar*/
+	}
+	/*the token_containers inside of the tokens div should be spaced out and in a grid*/
+	.tokens_container {
+		justify-content: center;
+		overflow: auto;
+		padding-top: 10px;
+		padding-right: 20%
+	}
+	/*the token div will be the container for each token, it will be a box with a border*/
+	.token {
+		border: 1px solid black;
+		/*the token div should be a rectangle*/
+		width: 300px;
+		height: 125px;
+	}
+	.token_image {
+		float: left;
+		padding: 10px;
+	}
+	.info {
+		float: left;
+		/*padding 50% of the image size*/
+		padding-top: 20px;
+
+	}
+	/*the token name should be the first thing in the info div*/
+	.token_name {
+	}
+	/*the networth should be the second thing in the info div*/
+	.networth {
+	}
+	/*the copy token button should be the third thing in the info div*/
+	.copy_token {
+	}
+</style>

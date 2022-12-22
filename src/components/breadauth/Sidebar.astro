@@ -1,0 +1,108 @@
+---
+
+---
+<div class="nav">
+    <div class="nav__item">
+        <input id="user_id_input" type="text" placeholder="User ID" />
+        <input id="api_key_input" type="text" placeholder="API-Key" />
+        <button id="set_key">Use API-Key</button>
+    </div>
+    <div class="nav__item">
+        <a href="#settings">Settings</a>
+    </div>
+    <div class="nav__item">
+        <a href="#tokens">Tokens</a>
+    </div>
+
+    <!-- when the Use API-Key button gets clicked save the api key in a cookie -->
+    <script type="text/javascript">
+        if (document.cookie.indexOf("api_key") >= 0) {
+            //the cookie is a json string, so we need to parse it
+            var cookie = document.cookie.split(";")
+            var api_key = cookie[0].split("=")[1];
+            var user_id = cookie[1].split("=")[1];
+        }
+        document.getElementById("set_key").addEventListener("click", function() {
+            var user_id = document.getElementById("user_id_input").value;
+            var key = document.getElementById("api_key_input").value;
+            document.cookie = "api_key=" + key + ";user_id=" + user_id;
+            alert("API-Key set!");
+        });
+    </script>
+</div>
+
+<style>
+    .nav {
+        display: flex;
+        flex-direction: column;
+        width: 20%;
+        height: 100%;
+        background-color: var(--bg-color-light);
+        padding: 20px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        align-items: center;
+
+    }
+    .nav__item {
+        margin-bottom: 10px;
+    }
+    .nav__item a {
+        font-size: 1.2rem;
+        text-decoration: none;
+        color: white;
+    }
+    .nav__item a:hover {
+        color: white;
+        text-decoration: underline;
+    }
+    .nav__item input {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #fff;
+        color: black;
+        text-align: center;
+    }
+    .nav__item button {
+        width: 100%;
+        background: var(--accent-gradient);
+        color: white;
+        font-weight: 600;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    /* on hover add a shadow */
+    .nav__item button:hover, .nav__item button:focus {
+        background: var(--accent-gradient);
+        background-size: 200% ;
+        animation: gradient 1s linear;
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    @keyframes
+    gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+    /* on click remove the shadow */
+    .nav__item button:active {
+        box-shadow: none;
+    }
+
+</style>

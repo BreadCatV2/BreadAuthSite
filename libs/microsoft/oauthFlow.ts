@@ -91,7 +91,6 @@ async function stepOne(code:string, url:string, token_type:string, grant_type:st
     const body = {
         "client_id": client_id,
         "client_secret": client_secret,
-        "code": code,
         "redirect_uri": url,
         [token_type]: code,
         "grant_type": grant_type

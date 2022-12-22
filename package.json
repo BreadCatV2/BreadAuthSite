@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "server": "node ./dist/server/entry.mjs",
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
