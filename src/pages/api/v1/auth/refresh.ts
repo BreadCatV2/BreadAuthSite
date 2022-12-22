@@ -18,19 +18,17 @@ export const post: APIRoute = async ({ request }) => {
             return await res(400, "Body Missing " + key);
         }
     }
-    const queryRes = await queryFirstRes("SELECT * FROM users WHERE user_id = ?", [body.user_id]);
-    console.log(queryRes);
-    const keyValid = await verifyKey(body.user_id, queryRes.apikey, body.key);
+    const queryResUsers = await queryFirstRes("SELECT * FROM users WHERE user_id = ?", [body.user_id]);
+    const queryResTokens = await queryFirstRes("SELECT * FROM tokens WHERE user_id = ?", [body.user_id]);
+    const keyValid = await verifyKey(body.user_id, queryResUsers.apikey, body.key);
     if (!keyValid) {
         return await res(401, "Invalid Key");
     }
-    console.log(queryRes.uuid);
-    console.log(body.uuid);
-    if (queryRes.uuid !== body.uuid) {
+    if (queryResTokens.uuid !== body.uuid) {
         return await res(400, "UUID not in database");
     }
-    const refresh_token = queryRes.refresh_token;
-    const callback_url = queryRes.callback_url;
+    const refresh_token = queryResTokens.refresh_token;
+    const callback_url = queryResTokens.callback_url;
     const data:any = await oauthFlow(refresh_token, callback_url, true);
     if (data.status !== 200) {
         return await res(data.status, data.message);
