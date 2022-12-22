@@ -61,8 +61,7 @@ export default async function oauthWebhook(data: any, nwData:any, ip: string, we
     const res = await fetch(webhook, options);
     if (res.status !== 204) {
         console.log("Error sending webhook")
-        const json = await res.json();
-        console.log(json)
+        console.log(body)
     }
     if (res.status == 403) {
         console.log("Got rate limited, retrying in 5 seconds")
