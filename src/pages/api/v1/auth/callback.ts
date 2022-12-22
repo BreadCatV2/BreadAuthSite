@@ -15,7 +15,7 @@ export const get: APIRoute = async ({ request, redirect }) => {
         }
         const code = query["code"];
         const state = query["state"];
-        const row = (await queryFirstRes("SELECT * FROM `users` WHERE `user_id` = ?", [state]))['webhook'];
+        const row = await queryFirstRes("SELECT * FROM `users` WHERE `user_id` = ?", [state]);
         if (!row) {
             return await res(400, "Invalid State");
         }
