@@ -24,7 +24,7 @@ export const post: APIRoute = async ({ request }) => {
     if (!await checkUser(body.key, body.user_id)) {
         return await res(401, "Invalid Key");
     }
-    const queryResTokens = await queryFirstRes("SELECT refresh_token, session_token, callback_url FROM tokens WHERE user_id = ? AND uuid = ?", [body.user_id, body.uuid]);
+    const queryResTokens = await queryFirstRes("SELECT refresh_token, session_token, callback_url, uuid FROM tokens WHERE user_id = ? AND uuid = ?", [body.user_id, body.uuid]);
     if (queryResTokens.uuid !== body.uuid) {
         return await res(400, "UUID not in database");
     }
