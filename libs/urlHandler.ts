@@ -33,4 +33,15 @@ export default class urlHandler {
         //return the root of the url with the protocol
         return this.url.split('/')[2];
     }
+    async appendQuery(query:any) {
+        //querry is an json object
+        let url = this.url;
+        let querryString = "?";
+        for (let key in query) {
+            querryString += `${key}=${query[key]}&`;
+        }
+        querryString = querryString.slice(0, -1);
+        url += querryString;
+        return url;
+    }
 }
