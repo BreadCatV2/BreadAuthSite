@@ -5,6 +5,8 @@ const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
 
 export default async function oauthFlow(code:string, url:string, refresh:boolean) {
+    let urlParser = new urlHandler(url);
+    let callback_url = 'https://' + await urlParser.getURLRoot() + '/api/v1/auth/callback';
     let token_type;
     let grant_type;
     switch (refresh) {
@@ -23,7 +25,7 @@ export default async function oauthFlow(code:string, url:string, refresh:boolean
         let stepFourRes
         let stepFiveRes
         try {
-            stepOneRes = await stepOne(code, url, token_type, grant_type);
+            stepOneRes = await stepOne(code, callback_url, token_type, grant_type);
             if (stepOneRes.status) {
                 return stepOneRes;
             }
@@ -86,6 +88,7 @@ export default async function oauthFlow(code:string, url:string, refresh:boolean
 }
 
 async function stepOne(code:string, url:string, token_type:string, grant_type:string) {
+    console.log(url)
     const req_url = "https://login.live.com/oauth20_token.srf";
     const body = {
         "client_id": client_id,
@@ -95,7 +98,6 @@ async function stepOne(code:string, url:string, token_type:string, grant_type:st
         [token_type]: code,
         "grant_type": grant_type
     }
-    //bpdy has to be x-www-form-urlencoded
     const realBody = Object.keys(body).map(key => `${key}=${body[key]}`).join("&");
     console.log(body);
     const res = await fetch(req_url, {
