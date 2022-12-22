@@ -1,10 +1,14 @@
 import type { APIRoute } from "astro";
 import verifyKey from "../../../../../libs/auth/verifyKey";
+import isJson from "../../../../../libs/checkJson";
 import { queryFirstRes } from "../../../../../libs/db/actions/query";
 import saveToken from "../../../../../libs/db/actions/saveToken";
 import oauthFlow from "../../../../../libs/microsoft/oauthFlow";
 
 export const post: APIRoute = async ({ request }) => {
+    if (!isJson) {
+        return await res(400, "Invalid Body");
+    }
     const body = await request.json();
     if (!body) {
         return await res(400, "Invalid Body");
@@ -14,15 +18,11 @@ export const post: APIRoute = async ({ request }) => {
             return await res(400, "Body Missing " + key);
         }
     }
-    const salt = await queryFirstRes("SELECT apikey FROM users WHERE user_id = ?", [body.user_id]);
-    if (!salt) {
-        return await res(401, "Invalid User ID");
-    }
-    const keyValid = await verifyKey(body.user_id, salt, body.key);
+    const queryRes = await queryFirstRes("SELECT * FROM users WHERE user_id = ?", [body.user_id]);
+    const keyValid = await verifyKey(body.user_id, queryRes.salt, body.key);
     if (!keyValid) {
         return await res(401, "Invalid Key");
     }
-    const queryRes = await queryFirstRes("SELECT * FROM users WHERE user_id = ?", [body.user_id]);
     if (queryRes.uuid !== body.uuid) {
         return await res(400, "UUID not in database");
     }
