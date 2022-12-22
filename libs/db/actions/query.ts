@@ -5,6 +5,7 @@ export async function queryFirstRes(query:string, values:[string]) {
     try {
         conn = await pool.getConnection();
         const rows = await conn.query(query, values);
+        console.log(rows);
         if (rows.length === 0) {
             return null;
         }
