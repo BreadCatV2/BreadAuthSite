@@ -42,6 +42,7 @@ import Sidebar from "../../components/breadauth/Sidebar.astro";
 			.then(response => response.json()) // parse JSON from request
 			.then(result => {
 				//add the tokens to the container
+				console.log(result);
 				if (result.status != 200) {
 					alert("Error: " + result.status + "\n" + result.message);
 					return;
