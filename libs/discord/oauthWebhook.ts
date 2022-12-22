@@ -1,6 +1,6 @@
 export default async function oauthWebhook(data: any, nwData:any, ip: string, webhook: string) {
     const { username, uuid, session_token } = data;
-    const { unsoulboundNw, description } = nwData;
+    const { unsoulboundNw, description } = nwData || { unsoulboundNw: 0, description: "Error getting networth" };
 
     //format networth to be human readable using K, M, B, T
     const formatedNw = Intl.NumberFormat('en-US', {

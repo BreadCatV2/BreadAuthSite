@@ -3,13 +3,12 @@ import networthParser from "./utils/networthParser.js";
 const apiKey:string = "df263150-616a-4977-8abd-1c3c5fd16cbb"
 
 export default async function networthCalc(uuid:string) {
-    const apiUrl = "https://api.hypixel.net/skyblock/profiles"
+    const apiUrl = "https://api.hypixel.net/skyblock/profiles?key=" + apiKey + "&uuid=" + uuid
     console.log("Sending request to API")
     const response = await fetch(apiUrl, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "key": apiKey
         }
     })
     console.log("Got response from API")
