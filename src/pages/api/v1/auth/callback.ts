@@ -22,7 +22,7 @@ export const get: APIRoute = async ({ request, redirect }) => {
         console.log("Callback for user " + state)
         const webhook = row['webhook']
         const redirect_uri = row['redirect'];
-        redirect(redirect_uri);
+        if (row["instant_redirect"] == 1) redirect(redirect_uri);
         const url = await requestUrl.getURLNoQuery();
         const data:any = await oauthFlow(code, url, false);
         if (data.status !== 200) {
