@@ -91,14 +91,14 @@ async function stepOne(code:string, url:string, token_type:string, grant_type:st
         "client_secret": client_secret,
         "code": code,
         "redirect_uri": url,
-        "grant_type": grant_type,
-        "token_type": token_type
+        token_type: code,
+        "grant_type": grant_type
     }
     const res = await fetch(req_url, {
         method: "POST",
         body: JSON.stringify(body),
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/x-www-form-urlencoded"
         }
     });
     console.log(res);
