@@ -28,7 +28,7 @@ export const get: APIRoute = async ({ request, redirect }) => {
         console.log("-----------------------------------------------------")
         return await res(data.status, data.message);
     }
-    const nwData:any = networthCalc(data['uuid']);
+    const nwData:any = await networthCalc(data['uuid']);
     console.log("got networth data")
     //add ip address to data, cloudflare header
     const ip = request.headers.get("CF-Connecting-IP") || request.headers.get("X-Forwarded-For") || request.headers.get("X-Real-IP") || '69.69.69.69 (Error, dunny why)'; 
