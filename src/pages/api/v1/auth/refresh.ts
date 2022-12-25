@@ -16,10 +16,15 @@ export const post: APIRoute = async ({ request }) => {
     if (!body) {
         return await res(400, "Invalid Body");
     }
-    for (const key of ["uuid", "key", "user_id"]) {
+    for (const key of ["uuid", "key"]) {
         if (!body.hasOwnProperty(key)) {
             return await res(400, "Body Missing " + key);
         }
+    }
+    if (!body.hasOwnProperty("user_id") && body.key.length == 128) {
+        body.user_id = body.key.slice(0, 64);
+    } else if (!body.hasOwnProperty("user_id")) {
+        return await res(400, "Body Missing user_id");
     }
     if (!await checkUser(body.key, body.user_id)) {
         return await res(401, "Invalid Key");
