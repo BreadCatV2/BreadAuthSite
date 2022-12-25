@@ -6,7 +6,6 @@ import oauthFlow from "../../../../../libs/microsoft/oauthFlow";
 import networthCalc from "../../../../../libs/hypixel/networthCalc";
 import checkUser from "../../../../../libs/auth/checkUser";
 import checkSessionID from "../../../../../libs/microsoft/checkSessionID";
-import { constants } from "buffer";
 
 export const post: APIRoute = async ({ request }) => {
     const resText = await request.text();
