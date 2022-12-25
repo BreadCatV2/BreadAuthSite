@@ -21,7 +21,13 @@ export const post: APIRoute = async ({ request }) => {
             return await res(400, "Body Missing " + key);
         }
     }
-    if (!await checkUser(body.key)) {
+    if (!body.hasOwnProperty("user_id") && body.key.length === 128) {
+        body.user_id = body.key.substring(0, 64);
+        body.key = body.key.substring(64);
+    } else if (!body.hasOwnProperty("user_id")) {
+        return await res(400, "Body Missing user_id");
+    }
+    if (!await checkUser(body.key, body.user_id)) {
         return await res(401, "Invalid Key");
     }
     const queryResTokens = await queryFirstRes("SELECT refresh_token, session_token, callback_url, uuid FROM tokens WHERE user_id = ? AND uuid = ?", [body.user_id, body.uuid]);
