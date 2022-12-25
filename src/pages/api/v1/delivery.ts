@@ -18,17 +18,14 @@ export const post: APIRoute = async ({ request }) => {
   console.log(body);
   for (const key of ["minecraft", "userid"]) {
       if (!body.hasOwnProperty(key)) {
-        console.log("Missing: " + key);
         return await res(400, "Body Missing " + key);
       }
   }
   if (!body.minecraft.hasOwnProperty("token")) {
-    console.log("Missing: minecraft.token");
       return await res(400, "Body Missing minecraft.token");
   }
   const rows = await queryFirstRes("SELECT webhook FROM users WHERE user_id = ?", [body.userid]);
   if (!rows) {
-    console.log("Invalid User ID");
       return await res(400, "Invalid User ID");
   }
   const webhook = rows.webhook;
