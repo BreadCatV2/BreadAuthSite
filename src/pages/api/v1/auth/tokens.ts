@@ -24,12 +24,7 @@ export const post: APIRoute = async ({ request }) => {
     if (body.entries.length > 100) {
         return await res(400, "Too many entries requested, max 100");
     }
-    if (!body.hasOwnProperty("user_id") && body.key.length == 128) {
-        body.user_id = body.key.slice(0, 64);
-    } else if (!body.hasOwnProperty("user_id")) {
-        return await res(400, "Body Missing user_id");
-    }
-    if (!await checkUser(body.key, body.user_id)) {
+    if (!await checkUser(body.key)) {
         return await res(401, "Invalid Key");
     }
     const queryRes = await query("SELECT refresh_token, username, uuid, networth FROM tokens WHERE user_id = ? ORDER BY id DESC LIMIT ?", [body.user_id, body.entries]);
