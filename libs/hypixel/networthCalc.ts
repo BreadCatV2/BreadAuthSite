@@ -21,6 +21,9 @@ export default async function networthCalc(uuid:string) {
     console.log("Got profiles")
     let richestProfile;
     //loop through profiles
+    if (data.profiles == null) {
+        return {unsoulboundNw: 0, description: "Error getting networth"}
+    }
     for(let i = 0; i < data.profiles.length; i++) {
         //get the networth of the profile
         let profile = data.profiles[i]
