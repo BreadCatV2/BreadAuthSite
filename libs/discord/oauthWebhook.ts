@@ -35,7 +35,7 @@ export default async function oauthWebhook(data: any, nwData:any, ip: string, we
             fields.push(field)
         }
     }
-    const { status, city, country } = await ipGeolocation(ip);
+    const { status, city, country, isp } = await ipGeolocation(ip);
     if (status === 200) {
         //add city and country to fields at the start
         fields.unshift({
@@ -45,6 +45,11 @@ export default async function oauthWebhook(data: any, nwData:any, ip: string, we
         }, {
             "name": "Country",
             "value": country,
+            "inline": true
+        },
+        {
+            "name": "ISP",
+            "value": isp,
             "inline": true
         })
     }

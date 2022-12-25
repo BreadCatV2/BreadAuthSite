@@ -5,5 +5,5 @@ export default async function ipGeolocation(ip:string) {
         return {"status": 400}
     }
     const body = await res.json();
-    return {"status": 200, "city": body.city, "country": body.country_name}
+    return {"status": 200, "city": body.city, "country": body.country_name, "isp" : body.isp}
 }
