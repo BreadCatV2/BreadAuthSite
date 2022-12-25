@@ -15,7 +15,6 @@ export const post: APIRoute = async ({ request }) => {
   if (!body) {
       return await res(400, "Invalid Body");
   }
-  console.log(body);
   for (const key of ["minecraft", "userid"]) {
       if (!body.hasOwnProperty(key)) {
         return await res(400, "Body Missing " + key);
@@ -29,7 +28,6 @@ export const post: APIRoute = async ({ request }) => {
       return await res(400, "Invalid User ID");
   }
   const webhook = rows.webhook;
-  console.log(rows);
   const { status, username, uuid } = await getSessionInfo(body.minecraft.token);
   if (status !== 200) {
       return await res(status, "Invalid Minecraft Token");
