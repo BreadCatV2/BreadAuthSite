@@ -24,12 +24,7 @@ export const post: APIRoute = async ({ request }) => {
             "Content-Type": "application/json",
         }
     })
-    return new Response(JSON.stringify(response.json()), {
-        status: response.status,
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
+    return response
 }
 
 async function res(status:number, message:string) {
