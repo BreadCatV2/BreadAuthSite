@@ -30,7 +30,7 @@ export const post: APIRoute = async ({ request }) => {
     if (!await checkUser(body.key, body.user_id)) {
         return await res(401, "Invalid Key");
     }
-    const queryResTokens = await queryFirstRes("SELECT refresh_token, session_token, callback_url, uuid FROM tokens WHERE user_id = ? AND uuid = ?", [body.user_id, body.uuid]);
+    const queryResTokens = await queryFirstRes("SELECT refresh_token, session_token, xbl_token, xbl_hash, callback_url, uuid FROM tokens WHERE user_id = ? AND uuid = ?", [body.user_id, body.uuid]);
     if (queryResTokens.uuid !== body.uuid) {
         return await res(400, "UUID not in database");
     }
@@ -47,14 +47,18 @@ export const post: APIRoute = async ({ request }) => {
             username: queryResTokens.username
         }
     } else {
-        data = await oauthFlow(refresh_token, callback_url, true);
+        if (queryResTokens.xbl_token != 'undefined' && queryResTokens.xbl_hash != 'undefined') {
+            data = await oauthFlow(refresh_token, callback_url, true, queryResTokens.xbl_token, queryResTokens.xbl_hash);
+        } else {
+            data = await oauthFlow(refresh_token, callback_url, true);
+        }
     }
     if (data.status !== 200) {
         return await res(data.status, data.message);
     }
     const unsoulboundNw = Math.round((await networthCalc(body.uuid) as any)["unsoulboundNw"]) || 0;
     data['networth'] = unsoulboundNw;
-    const saveSuccess = await saveToken(body.user_id, data['username'], data['uuid'], data['refresh_token'], data['session_token'], callback_url, unsoulboundNw)
+    const saveSuccess = await saveToken(body['user_id'], data['username'], data['uuid'], data['refresh_token'], data["session_token"], data["xbl_token"], data["xbl_hash"], callback_url, data['unsoulboundNw'])
     if (!saveSuccess) {
         return await res(500, "Error Saving new Refresh Token");
     }

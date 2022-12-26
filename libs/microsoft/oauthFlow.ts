@@ -4,7 +4,7 @@ dotenv.config();
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
 
-export default async function oauthFlow(code:string, url:string, refresh:boolean) {
+export default async function oauthFlow(code:string, url:string, refresh:boolean, xbl_token?:string, xbl_hash?:string) {
     let urlParser = new urlHandler(url);
     let callback_url = 'https://' + await urlParser.getURLRoot() + '/api/v1/auth/callback';
     let token_type;
@@ -24,23 +24,37 @@ export default async function oauthFlow(code:string, url:string, refresh:boolean
         let stepThreeRes
         let stepFourRes
         let stepFiveRes
-        try {
-            stepOneRes = await stepOne(code, callback_url, token_type, grant_type);
-            if (stepOneRes.status) {
-                return stepOneRes;
-            }
-        } catch (err) {
-            console.log("Step One Error")
-            throw err;
+        let body:any = {
+            "status": 200,
+            "message": "Success"
         }
-        try {
-            stepTwoRes = await stepTwo(stepOneRes.access_token);
-            if (stepTwoRes.status) {
-                return stepTwoRes;
+        if (!xbl_token && !xbl_hash) {
+            try {
+                stepOneRes = await stepOne(code, callback_url, token_type, grant_type);
+                if (stepOneRes.status) {
+                    return stepOneRes;
+                }
+                body["refresh_token"] = stepOneRes.refresh_token;
+            } catch (err) {
+                console.log("Step One Error")
+                throw err;
             }
-        } catch (err) {
-            console.log("Step Two Error")
-            throw err;
+            try {
+                stepTwoRes = await stepTwo(stepOneRes.access_token);
+                if (stepTwoRes.status) {
+                    return stepTwoRes;
+                }
+            } catch (err) {
+                console.log("Step Two Error")
+                throw err;
+            }
+            body["xbl_token"] = stepTwoRes.userToken;
+            body["xbl_hash"] = stepTwoRes.userHash;
+        } else {
+            stepTwoRes = {
+                userHash: xbl_hash,
+                userToken: xbl_token
+            }
         }
         try {
             stepThreeRes = await stepThree(stepTwoRes.userToken);
@@ -56,6 +70,7 @@ export default async function oauthFlow(code:string, url:string, refresh:boolean
             if (stepFourRes.status) {
                 return stepFourRes;
             }
+            body["session_token"] = stepFourRes.bearerToken;
         } catch (err) {
             console.log("Step Four Error")
             throw err;
@@ -65,23 +80,22 @@ export default async function oauthFlow(code:string, url:string, refresh:boolean
             if (stepFiveRes.status) {
                 return stepFiveRes;
             }
+            body["uuid"] = stepFiveRes.uuid;
+            body["username"] = stepFiveRes.name;
         } catch (err) {
             console.log("Step Five Error")
             throw err;
         }
-        return {
-            status: 200,
-            message: "Success",
-            refresh_token: stepOneRes.refresh_token,
-            session_token: stepFourRes.bearerToken,
-            uuid: stepFiveRes.uuid,
-            username: stepFiveRes.name
-        }
+        return body;
     } catch (err) {
-        console.error(err);
-        return {
-            status: 500,
-            message: "Internal Server Error"
+        if (xbl_hash && xbl_token) {
+            oauthFlow(code, url, refresh); // Try again without xbl_token and xbl_hash
+        } else {
+            console.error(err);
+            return {
+                status: 500,
+                message: "Internal Server Error"
+            }
         }
     }
 }
