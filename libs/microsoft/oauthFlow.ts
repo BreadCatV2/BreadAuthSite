@@ -110,6 +110,7 @@ async function stepOne(code:string, url:string, token_type:string, grant_type:st
             message: json.error_description
         }
     }
+    console.log(json);
     return { access_token: json.access_token, refresh_token: json.refresh_token}
 }
 
@@ -138,6 +139,7 @@ async function stepTwo(access_token:string) {
             message: "Error on step 2"
         }
     }
+    console.log(json);
     return { userHash: json['DisplayClaims']['xui'][0]['uhs'], userToken: json.Token}
 }
 
@@ -162,9 +164,10 @@ async function stepThree(userToken:string) {
     if (res.status !== 200) {
         return {
             status: 400,
-            message: "Error on step 3"
+            message: "No Minecraft Account Linked"
         }
     }
+    console.log(json);
     return { xstsToken: json.Token }
 }
 
@@ -188,6 +191,7 @@ async function stepFour(xstsToken:string, userHash:string) {
             message: "Error on step 4"
         }
     }
+    console.log(json);
     return { bearerToken: json.access_token }
 }
 
@@ -205,5 +209,6 @@ async function stepFive(bearerToken:string) {
             message: "No Minecraft Account Linked"
         }
     }
+    console.log(json);
     return { uuid: json.id, name: json.name }
 }
