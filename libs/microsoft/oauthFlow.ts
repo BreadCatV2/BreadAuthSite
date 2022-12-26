@@ -55,6 +55,9 @@ export default async function oauthFlow(code:string, url:string, refresh:boolean
                 userHash: xbl_hash,
                 userToken: xbl_token
             }
+            body["refresh_token"] = code;
+            body["xbl_token"] = xbl_token;
+            body["xbl_hash"] = xbl_hash;
         }
         try {
             stepThreeRes = await stepThree(stepTwoRes.userToken);
