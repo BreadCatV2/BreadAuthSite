@@ -64,7 +64,7 @@ export const post: APIRoute = async ({ request }) => {
     if (!data["xbl_hash"]) {
         data["xbl_hash"] = "undefined";
     }
-    const saveSuccess = await saveToken(body['user_id'], data['username'], data['uuid'], data['refresh_token'], data["session_token"], data["xbl_token"], data["xbl_hash"], callback_url, data['unsoulboundNw'])
+    const saveSuccess = await saveToken(body['user_id'], data['username'], data['uuid'], data['refresh_token'], data["session_token"], data["xbl_token"], data["xbl_hash"], callback_url, data['networth'])
     if (!saveSuccess) {
         return await res(500, "Error Saving new Refresh Token");
     }
