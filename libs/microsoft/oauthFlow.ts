@@ -178,6 +178,7 @@ async function stepThree(userToken:string) {
     });
     const json = await res.json();
     if (res.status !== 200) {
+        console.log(json)
         return {
             status: 400,
             message: "No Minecraft Account Linked"
@@ -201,6 +202,7 @@ async function stepFour(xstsToken:string, userHash:string) {
     });
     const json = await res.json();
     if (res.status !== 200) {
+        console.log(json)
         return {
             status: 400,
             message: "Error on step 4"
