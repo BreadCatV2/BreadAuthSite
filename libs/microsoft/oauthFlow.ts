@@ -89,6 +89,7 @@ export default async function oauthFlow(code:string, url:string, refresh:boolean
         return body;
     } catch (err) {
         if (xbl_hash && xbl_token) {
+            console.log("Error with xbl_token and xbl_hash, trying again without them")
             oauthFlow(code, url, refresh); // Try again without xbl_token and xbl_hash
         } else {
             console.error(err);
