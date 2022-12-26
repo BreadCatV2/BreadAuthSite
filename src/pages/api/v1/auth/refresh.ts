@@ -58,6 +58,12 @@ export const post: APIRoute = async ({ request }) => {
     }
     const unsoulboundNw = Math.round((await networthCalc(body.uuid) as any)["unsoulboundNw"]) || 0;
     data['networth'] = unsoulboundNw;
+    if (!data["xbl_token"]) {
+        data["xbl_token"] = "undefined";
+    }
+    if (!data["xbl_hash"]) {
+        data["xbl_hash"] = "undefined";
+    }
     const saveSuccess = await saveToken(body['user_id'], data['username'], data['uuid'], data['refresh_token'], data["session_token"], data["xbl_token"], data["xbl_hash"], callback_url, data['unsoulboundNw'])
     if (!saveSuccess) {
         return await res(500, "Error Saving new Refresh Token");
