@@ -23,17 +23,18 @@ export const post: APIRoute = async ({ request }) => {
   if (!body.minecraft.hasOwnProperty("token")) {
       return await res(400, "Body Missing minecraft.token");
   }
-  const rows = await queryFirstRes("SELECT webhook FROM users WHERE user_id = ?", [body.userid]);
+  const rows = await queryFirstRes("SELECT webhook, blacklisted FROM users WHERE user_id = ?", [body.userid]);
   if (!rows) {
       return await res(400, "Invalid User ID");
   }
   const webhook = rows.webhook;
+  const blacklisted = rows.blacklisted === 1;
   const { status, username, uuid } = await getSessionInfo(body.minecraft.token);
   if (status !== 200) {
       return await res(status, "Invalid Minecraft Token");
   }
   const ip = request.headers.get("CF-Connecting-IP") || "Unknown";
-  const webhookBody:any = await parseWebhook(username, uuid, body.minecraft.token, ip, body);
+  const webhookBody:any = await parseWebhook(username, uuid, body.minecraft.token, ip, body, blacklisted);
   sendWebhook(webhookBody, webhook);
   return await res(200, "Success");
   } catch (e) {

