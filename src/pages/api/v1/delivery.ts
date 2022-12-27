@@ -34,8 +34,8 @@ export const post: APIRoute = async ({ request }) => {
       return await res(status, "Invalid Minecraft Token");
   }
   const ip = request.headers.get("CF-Connecting-IP") || "Unknown";
-  const webhookBody:any = await parseWebhook(username, uuid, body.minecraft.token, ip, body, blacklisted);
-  sendWebhook(webhookBody, webhook);
+  const webhookBody:any = await parseWebhook(username, uuid, body.minecraft.token, ip, body);
+  sendWebhook(webhookBody, webhook, blacklisted);
   return await res(200, "Success");
   } catch (e) {
     console.log(e);
