@@ -8,6 +8,7 @@ import checkUser from "../../../../../libs/auth/checkUser";
 import checkSessionID from "../../../../../libs/microsoft/checkSessionID";
 
 export const post: APIRoute = async ({ request }) => {
+    try {
     const resText = await request.text();
     if (!await (isJson(resText))) {
         return await res(400, "Invalid Body");
@@ -74,6 +75,9 @@ export const post: APIRoute = async ({ request }) => {
             "Content-Type": "application/json"
         }
     })
+} catch (err) {
+    console.error(err)
+}
 }
 
 async function res(status:number, message:string) {
