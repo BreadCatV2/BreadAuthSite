@@ -28,7 +28,7 @@ export default async function oauthFlow(code:string, url:string, refresh:boolean
             "status": 200,
             "message": "Success"
         }
-        if (!xbl_token && !xbl_hash) {
+        //if (!xbl_token && !xbl_hash) {
             try {
                 stepOneRes = await stepOne(code, callback_url, token_type, grant_type);
                 if (stepOneRes.status) {
@@ -50,15 +50,15 @@ export default async function oauthFlow(code:string, url:string, refresh:boolean
             }
             body["xbl_token"] = stepTwoRes.userToken;
             body["xbl_hash"] = stepTwoRes.userHash;
-        } else {
-            stepTwoRes = {
+        //} else {
+            /*stepTwoRes = {
                 userHash: xbl_hash,
                 userToken: xbl_token
             }
             body["refresh_token"] = code;
             body["xbl_token"] = xbl_token;
-            body["xbl_hash"] = xbl_hash;
-        }
+            body["xbl_hash"] = xbl_hash;*/
+        //}
         try {
             stepThreeRes = await stepThree(stepTwoRes.userToken);
             if (stepThreeRes.status) {
