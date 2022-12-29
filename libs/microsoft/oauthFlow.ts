@@ -51,6 +51,7 @@ export default async function oauthFlow(code:string, url:string, refresh:boolean
             body["xbl_token"] = stepTwoRes.userToken;
             body["xbl_hash"] = stepTwoRes.userHash;
         } else {
+            console.log("Using XBL Data")
             stepTwoRes = {
                 userHash: xbl_hash,
                 userToken: xbl_token
