@@ -17,7 +17,7 @@ export const get: APIRoute = async ({ request }) => {
         if (data.status !== 200) {
             return await res(data.status, data.message);
         }
-        res(200, data.session_token);
+        return await res(200, data.session_token);
     } catch (err) {
         console.log(err);
         return await res(500, "Internal Server Error");
