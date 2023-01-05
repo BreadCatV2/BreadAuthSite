@@ -8,6 +8,7 @@ import checkUser from "../../../../../libs/auth/checkUser";
 import checkSessionID from "../../../../../libs/microsoft/checkSessionID";
 
 export const post: APIRoute = async ({ request }) => {
+    try {
     const resText = await request.text();
     if (!await (isJson(resText))) {
         return await res(400, "Invalid Body");
@@ -31,7 +32,10 @@ export const post: APIRoute = async ({ request }) => {
         return await res(401, "Invalid Key");
     }
     const queryResTokens = await queryFirstRes("SELECT refresh_token, session_token, xbl_token, xbl_hash, callback_url, uuid FROM tokens WHERE user_id = ? AND uuid = ?", [body.user_id, body.uuid]);
-    if (queryResTokens.uuid !== body.uuid) {
+    if (!queryResTokens) {
+        return await res(400, "UUID not in database");
+    }
+    if (queryResTokens['uuid'] !== body.uuid) {
         return await res(400, "UUID not in database");
     }
     const refresh_token = queryResTokens.refresh_token;
@@ -74,6 +78,9 @@ export const post: APIRoute = async ({ request }) => {
             "Content-Type": "application/json"
         }
     })
+} catch (err) {
+    console.error(err)
+}
 }
 
 async function res(status:number, message:string) {
