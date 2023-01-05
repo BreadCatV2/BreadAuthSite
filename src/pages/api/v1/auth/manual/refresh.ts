@@ -17,7 +17,12 @@ export const get: APIRoute = async ({ request }) => {
         if (data.status !== 200) {
             return await res(data.status, data.message);
         }
-        return await res(200, data.session_token);
+        return new Response(JSON.stringify(data), {
+            status: 200,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
     } catch (err) {
         console.log(err);
         return await res(500, "Internal Server Error");
