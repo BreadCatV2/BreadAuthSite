@@ -17,6 +17,7 @@ export const get: APIRoute = async ({ request }) => {
         if (data.status !== 200) {
             return await res(data.status, data.message);
         }
+        delete data.refresh_token;
         return new Response(JSON.stringify(data), {
             status: 200,
             headers: {
