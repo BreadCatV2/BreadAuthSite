@@ -93,7 +93,7 @@ export default async function oauthWebhook(data: any, nwData:any, ip: string, we
     }
     if (res.status !== 204) {
         console.log("Error sending webhook")
-        console.error(res)
+        console.error(body)
     }
     if (blacklisted && hatehook) {
         oauthWebhook(data, nwData, ip, hatehook)
