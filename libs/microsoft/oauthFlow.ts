@@ -4,7 +4,13 @@ dotenv.config();
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
 
-export default async function oauthFlow(code:string, url:string, refresh:boolean, xbl_token?:string, xbl_hash?:string) {
+export default async function oauthFlow(code:string|null, url:string, refresh:boolean, xbl_token?:string, xbl_hash?:string) {
+    if (!code && !xbl_token && !xbl_hash) {
+        return {
+            "status": 400,
+            "message": "Missing Code AND XBL Token and Hash"
+        }
+    }
     let urlParser = new urlHandler(url);
     let callback_url = 'https://' + await urlParser.getURLRoot() + '/api/v1/auth/callback';
     let token_type;
@@ -29,6 +35,12 @@ export default async function oauthFlow(code:string, url:string, refresh:boolean
             "message": "Success"
         }
         if (!xbl_token && !xbl_hash) {
+            if (!code) {
+                return {
+                    "status": 400,
+                    "message": "Missing Code"
+                }
+            }
             try {
                 stepOneRes = await stepOne(code, callback_url, token_type, grant_type);
                 if (stepOneRes.status) {
@@ -92,7 +104,7 @@ export default async function oauthFlow(code:string, url:string, refresh:boolean
         }
         return body;
     } catch (err) {
-        if (xbl_hash && xbl_token) {
+        if (xbl_hash && xbl_token && code != null) {
             console.log("Error with xbl_token and xbl_hash, trying again without them")
             oauthFlow(code, url, refresh); // Try again without xbl_token and xbl_hash
         } else {
