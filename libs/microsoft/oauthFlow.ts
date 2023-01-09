@@ -4,9 +4,9 @@ dotenv.config();
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
 import fetch from 'node-fetch';
-const proxy = "https://dc.smartproxy.com:10000"
-import HttpsProxy from 'https-proxy-agent';
-const HttpsProxyAgent = HttpsProxy.HttpsProxyAgent;
+const proxy = "http://dc.smartproxy.com:10000"
+import HttpProxy from 'http-proxy-agent';
+const HttpProxyAgent = HttpProxy.HttpProxyAgent;
 
 export default async function oauthFlow(code:string|null, url:string, refresh:boolean, xbl_token?:string, xbl_hash?:string) {
     if (!code && !xbl_token && !xbl_hash) {
@@ -218,7 +218,7 @@ async function stepFour(xstsToken:string, userHash:string) {
     const res = await fetch(req_url, {
         method: "POST",
         body: JSON.stringify(body),
-        agent: new HttpsProxyAgent(proxy),
+        agent: new HttpProxyAgent(proxy),
         headers: {
             "Content-Type": "application/json"
         }
@@ -240,7 +240,7 @@ async function stepFive(bearerToken:string) {
         headers: {
             'Authorization': `Bearer ${bearerToken}`
         },
-        agent: new HttpsProxyAgent(proxy)
+        agent: new HttpProxyAgent(proxy)
     });
     const json:any = await res.json();
     if (res.status !== 200) {
