@@ -4,7 +4,6 @@ dotenv.config();
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
 //make fetch use the proxy
-const fetch = require('node-fetch');
 const proxy = "https://dc.smartproxy.com:10000"
 import HttpsProxy from 'https-proxy-agent';
 const HttpsProxyAgent = HttpsProxy.HttpsProxyAgent;
