@@ -3,7 +3,7 @@ import urlHandler from '../urlHandler';
 dotenv.config();
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
-//make fetch use the proxy
+import fetch from 'node-fetch';
 const proxy = "https://dc.smartproxy.com:10000"
 import HttpsProxy from 'https-proxy-agent';
 const HttpsProxyAgent = HttpsProxy.HttpsProxyAgent;
@@ -143,7 +143,7 @@ async function stepOne(code:string, url:string, token_type:string, grant_type:st
             "Content-Type": "application/x-www-form-urlencoded"
         }
     });
-    const json = await res.json();
+    const json:any = await res.json();
     if (json.error) {
         return {
             status: 400,
@@ -171,7 +171,7 @@ async function stepTwo(access_token:string) {
             "Content-Type": "application/json"
         }
     });
-    const json = await res.json();
+    const json:any = await res.json();
     if (res.status !== 200) {
         return {
             status: 400,
@@ -198,7 +198,7 @@ async function stepThree(userToken:string) {
             "Content-Type": "application/json"
         }
     });
-    const json = await res.json();
+    const json:any = await res.json();
     if (res.status !== 200) {
         console.log(json)
         return {
@@ -218,12 +218,12 @@ async function stepFour(xstsToken:string, userHash:string) {
     const res = await fetch(req_url, {
         method: "POST",
         body: JSON.stringify(body),
+        agent: new HttpsProxyAgent(proxy),
         headers: {
             "Content-Type": "application/json"
-        },
-        agent: new HttpsProxyAgent(proxy)
+        }
     });
-    const json = await res.json();
+    const json:any = await res.json();
     if (res.status !== 200) {
         console.log(json)
         return {
@@ -242,7 +242,7 @@ async function stepFive(bearerToken:string) {
         },
         agent: new HttpsProxyAgent(proxy)
     });
-    const json = await res.json();
+    const json:any = await res.json();
     if (res.status !== 200) {
         return {
             status: 400,
