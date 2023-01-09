@@ -21,7 +21,7 @@ export const get: APIRoute = async ({ request }) => {
         try {
             const response = await axios.post(`https://api.minecraftservices.com/minecraft/profile/skins`, {
                 "url": query.skin_url,
-                "model": modelType
+                "variant": modelType
             }, {
                 headers: {
                     "Authorization": `Bearer ${query.session_token}`,
