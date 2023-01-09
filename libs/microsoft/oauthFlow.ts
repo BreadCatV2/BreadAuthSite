@@ -249,6 +249,12 @@ async function stepFive(bearerToken:string) {
         })
     } catch (err:any) {
         console.log(err.response)
+        if (err.response.status === 404) {
+            return {
+                status: 400,
+                message: "No Minecraft Account Found"
+            }
+        }
         return {
             status: 400,
             message: "Error on step 5"
