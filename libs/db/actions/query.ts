@@ -21,12 +21,10 @@ export async function query(query:string, values:string[]) {
     try {
         conn = await getConnection();
         const rows = await conn.query(query, values);
+        conn.release();
         return rows;
     } catch (err) {
         console.error(err);
         return null;
-    }
-    finally {
-        conn?.release();
     }
 }
