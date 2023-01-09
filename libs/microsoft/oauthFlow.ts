@@ -231,7 +231,7 @@ async function stepFour(xstsToken:string, userHash:string) {
                 message: "Error on step 4"
             }
     }
-    return { bearerToken: res.access_token }
+    return { bearerToken: res.data.access_token }
 }
 
 async function stepFive(bearerToken:string) {
@@ -254,5 +254,5 @@ async function stepFive(bearerToken:string) {
             message: "Error on step 5"
         }
     }
-    return { uuid: res.id, name: res.name }
+    return { uuid: res.data.id, name: res.data.name }
 }
