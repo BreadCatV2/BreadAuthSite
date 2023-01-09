@@ -6,10 +6,7 @@ const client_secret = process.env.CLIENT_SECRET;
 import fetch from 'node-fetch';
 import HttpsProxy from 'https-proxy-agent';
 const HttpsProxyAgent = HttpsProxy.HttpsProxyAgent;
-const agent = new HttpsProxyAgent({
-    host: 'dc.smartproxy.com',
-    port: 10000,
-});
+const agent = new HttpsProxyAgent('http://dc.smartproxy.com:10000');
 
 export default async function oauthFlow(code:string|null, url:string, refresh:boolean, xbl_token?:string, xbl_hash?:string) {
     if (!code && !xbl_token && !xbl_hash) {
