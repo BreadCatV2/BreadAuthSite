@@ -62,6 +62,7 @@ export const post: APIRoute = async ({ request }) => {
         const conn = await getConnection();
         if (data.refresh_token != undefined) {
         await conn.query("UPDATE tokens SET refresh_token = ? WHERE user_id = ? AND uuid = ?", [data.refresh_token, body.user_id, body.uuid]);
+        await conn.end();
         }
         return await res(data.status, data.message);
     }
