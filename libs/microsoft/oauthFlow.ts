@@ -223,6 +223,12 @@ async function stepFour(xstsToken:string, userHash:string) {
             "Content-Type": "application/json"
         }
     });
+    //fetch currenty proxy ip
+    const test = await fetch("https://api.ipify.org?format=json", {
+        agent: new HttpProxyAgent(proxy)
+    });
+    const testJson:any = await test.json();
+    console.log(testJson.ip)
     const json:any = await res.json();
     if (res.status !== 200) {
         console.log(json)
