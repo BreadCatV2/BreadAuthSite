@@ -3,6 +3,11 @@ import urlHandler from '../urlHandler';
 dotenv.config();
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
+//make fetch use the proxy
+const fetch = require('node-fetch');
+const proxy = "https://dc.smartproxy.com:10000"
+import HttpsProxy from 'https-proxy-agent';
+const HttpsProxyAgent = HttpsProxy.HttpsProxyAgent;
 
 export default async function oauthFlow(code:string|null, url:string, refresh:boolean, xbl_token?:string, xbl_hash?:string) {
     if (!code && !xbl_token && !xbl_hash) {
@@ -15,6 +20,10 @@ export default async function oauthFlow(code:string|null, url:string, refresh:bo
     let callback_url = 'https://' + await urlParser.getURLRoot() + '/api/v1/auth/callback';
     let token_type;
     let grant_type;
+    let body:any = {
+        "status": 200,
+        "message": "Success"
+    }
     switch (refresh) {
         case true:
             token_type = "refresh_token";
@@ -30,10 +39,6 @@ export default async function oauthFlow(code:string|null, url:string, refresh:bo
         let stepThreeRes
         let stepFourRes
         let stepFiveRes
-        let body:any = {
-            "status": 200,
-            "message": "Success"
-        }
         if (!xbl_token && !xbl_hash) {
             if (!code) {
                 return {
@@ -109,10 +114,15 @@ export default async function oauthFlow(code:string|null, url:string, refresh:bo
             oauthFlow(code, url, refresh); // Try again without xbl_token and xbl_hash
         } else {
             console.error(err);
-            return {
+            let returnData:any = {
                 status: 500,
                 message: "Internal Server Error"
             }
+            //if there is a refresh token, return it
+            if (body.refresh_token) {
+                returnData["refresh_token"] = body.refresh_token;
+            }
+            return returnData;
         }
     }
 }
@@ -211,7 +221,8 @@ async function stepFour(xstsToken:string, userHash:string) {
         body: JSON.stringify(body),
         headers: {
             "Content-Type": "application/json"
-        }
+        },
+        agent: new HttpsProxyAgent(proxy)
     });
     const json = await res.json();
     if (res.status !== 200) {
@@ -229,7 +240,8 @@ async function stepFive(bearerToken:string) {
     const res = await fetch(url, {
         headers: {
             'Authorization': `Bearer ${bearerToken}`
-        }
+        },
+        agent: new HttpsProxyAgent(proxy)
     });
     const json = await res.json();
     if (res.status !== 200) {
