@@ -30,9 +30,29 @@ export const get: APIRoute = async ({ request }) => {
                 }
             })
         } catch (err:any) {
+            let message = err.response.data.errorMessage;
+            switch (err.response.status) {
+                case 400:
+                    message = 'Name is invalid, longer than 16 characters or contains characters other than (a-zA-Z0-9_)';
+                    break;
+                case 403:
+                    message = 'Name is unavailable (Either taken or has not become available)';
+                    break;
+                case 401:
+                    message = 'Unauthorized (Bearer token expired or is not correct)';
+                    break;
+                case 429:
+                    message = 'Too many requests sent';
+                    break;
+                case 500:
+                    message = 'Timed out (API lagged out and could not respond)';
+                    break;
+                default:
+                    break;
+            }
             return new Response(JSON.stringify({
                 status: err.response.status,
-                message: err.response.data.errorMessage
+                message: message
             }), {
                 status: err.response.status,
                 headers: {
