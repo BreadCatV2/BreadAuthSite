@@ -12,6 +12,7 @@ export async function queryFirstRes(query:string, values:string[]) {
         return rows[0];
     } catch (err) {
         console.error(err);
+        conn?.end();
         return null;
     }
 }
@@ -25,6 +26,7 @@ export async function query(query:string, values:string[]) {
         return rows;
     } catch (err) {
         console.error(err);
+        conn?.end();
         return null;
     }
 }
