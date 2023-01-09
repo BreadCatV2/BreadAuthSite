@@ -4,7 +4,6 @@ dotenv.config();
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
 import fetch from 'node-fetch';
-const proxy = "http://dc.smartproxy.com:10000"
 import HttpProxy from 'http-proxy-agent';
 const HttpProxyAgent = HttpProxy.HttpProxyAgent;
 const agent = new HttpProxyAgent({
@@ -222,7 +221,7 @@ async function stepFour(xstsToken:string, userHash:string) {
     const res = await fetch(req_url, {
         method: "POST",
         body: JSON.stringify(body),
-        agent: new HttpProxyAgent(proxy),
+        agent: agent,
         headers: {
             "Content-Type": "application/json"
         }
