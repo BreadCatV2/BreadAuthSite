@@ -240,7 +240,7 @@ async function stepFive(bearerToken:string) {
     try {
         res = await axios.get(url, {
             headers: {
-                Authorisation: `Bearer ${bearerToken}`
+                Authorization: `Bearer ${bearerToken}`
             },
             proxy: {
                 host: 'dc.smartproxy.com',
