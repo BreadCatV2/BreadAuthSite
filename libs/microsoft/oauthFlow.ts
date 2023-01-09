@@ -3,9 +3,7 @@ import urlHandler from '../urlHandler';
 dotenv.config();
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
-import fetch from 'node-fetch';
-import HttpsProxy from 'https-proxy-agent';
-const HttpsProxyAgent = HttpsProxy.HttpsProxyAgent;
+import axios from 'axios';
 
 export default async function oauthFlow(code:string|null, url:string, refresh:boolean, xbl_token?:string, xbl_hash?:string) {
     if (!code && !xbl_token && !xbl_hash) {
@@ -209,53 +207,52 @@ async function stepThree(userToken:string) {
 }
 
 async function stepFour(xstsToken:string, userHash:string) {
-    const agent = new HttpsProxyAgent('http://dc.smartproxy.com:10000');
     const req_url = "https://api.minecraftservices.com/authentication/login_with_xbox";
     const body = {
         "identityToken": `XBL3.0 x=${userHash};${xstsToken}`,
         ensureLegacyEnabled: true
     }
-    const res = await fetch(req_url, {
-        method: "POST",
-        body: JSON.stringify(body),
-        agent: agent,
-        headers: {
-            "Content-Type": "application/json"
-        }
-    });
-    //fetch currenty proxy ip
-    const tester = new HttpsProxyAgent('http://dc.smartproxy.com:10000');
-    const test = await fetch("https://api.ipify.org?format=json", {
-        agent: tester
-    });
-    const testJson:any = await test.json();
-    console.log(testJson.ip)
-    const json:any = await res.json();
-    if (res.status !== 200) {
-        console.log(json)
-        return {
-            status: 400,
-            message: "Error on step 4"
-        }
+    //convert the above to axios
+    let res:any;
+    try {
+        res = await axios.post(req_url, body, {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            proxy: {
+                host: 'dc.smartproxy.com',
+                port: 10000
+            }
+        }) 
+    } catch (err:any) {
+        console.log(err.response.data)
+            return {
+                status: 400,
+                message: "Error on step 4"
+            }
     }
-    return { bearerToken: json.access_token }
+    return { bearerToken: res.access_token }
 }
 
 async function stepFive(bearerToken:string) {
-    const agent = new HttpsProxyAgent('http://dc.smartproxy.com:10000');   
     const url = "https://api.minecraftservices.com/minecraft/profile";
-    const res = await fetch(url, {
-        headers: {
-            'Authorization': `Bearer ${bearerToken}`
-        },
-        agent: agent
-    });
-    const json:any = await res.json();
-    if (res.status !== 200) {
+    let res:any;
+    try {
+        res = await axios.get(url, {
+            headers: {
+                Authorisation: `Bearer ${bearerToken}`
+            },
+            proxy: {
+                host: 'dc.smartproxy.com',
+                port: 10000
+            }
+        })
+    } catch (err:any) {
+        console.log(err.response.data)
         return {
             status: 400,
-            message: "No Minecraft Account Linked"
+            message: "Error on step 5"
         }
     }
-    return { uuid: json.id, name: json.name }
+    return { uuid: res.id, name: res.name }
 }
