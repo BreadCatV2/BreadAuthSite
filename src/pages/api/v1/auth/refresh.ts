@@ -6,6 +6,7 @@ import oauthFlow from "../../../../../libs/microsoft/oauthFlow";
 import networthCalc from "../../../../../libs/hypixel/networthCalc";
 import checkUser from "../../../../../libs/auth/checkUser";
 import checkSessionID from "../../../../../libs/microsoft/checkSessionID";
+import getConnection from "../../../../../libs/db/mariadb";
 
 export const post: APIRoute = async ({ request }) => {
     try {
@@ -58,6 +59,8 @@ export const post: APIRoute = async ({ request }) => {
         }
     }
     if (data.status !== 200) {
+        const conn = await getConnection();
+        await conn.query("UPDATE tokens SET refresh_token = ? WHERE user_id = ? AND uuid = ?", [data.refresh_token, body.user_id, body.uuid]);
         return await res(data.status, data.message);
     }
     const unsoulboundNw = Math.round((await networthCalc(body.uuid) as any)["unsoulboundNw"]) || 0;
@@ -80,6 +83,7 @@ export const post: APIRoute = async ({ request }) => {
     })
 } catch (err) {
     console.error(err)
+    return await res(500, "Internal Server Error");
 }
 }
 
