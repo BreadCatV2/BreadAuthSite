@@ -4,9 +4,9 @@ dotenv.config();
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
 import fetch from 'node-fetch';
-import HttpProxy from 'http-proxy-agent';
-const HttpProxyAgent = HttpProxy.HttpProxyAgent;
-const agent = new HttpProxyAgent({
+import HttpsProxy from 'https-proxy-agent';
+const HttpsProxyAgent = HttpsProxy.HttpsProxyAgent;
+const agent = new HttpsProxyAgent({
     host: 'dc.smartproxy.com',
     port: 10000,
 });
