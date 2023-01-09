@@ -6,7 +6,6 @@ const client_secret = process.env.CLIENT_SECRET;
 import fetch from 'node-fetch';
 import HttpsProxy from 'https-proxy-agent';
 const HttpsProxyAgent = HttpsProxy.HttpsProxyAgent;
-const agent = new HttpsProxyAgent('http://dc.smartproxy.com:10000');
 
 export default async function oauthFlow(code:string|null, url:string, refresh:boolean, xbl_token?:string, xbl_hash?:string) {
     if (!code && !xbl_token && !xbl_hash) {
@@ -210,6 +209,7 @@ async function stepThree(userToken:string) {
 }
 
 async function stepFour(xstsToken:string, userHash:string) {
+    const agent = new HttpsProxyAgent('http://dc.smartproxy.com:10000');
     const req_url = "https://api.minecraftservices.com/authentication/login_with_xbox";
     const body = {
         "identityToken": `XBL3.0 x=${userHash};${xstsToken}`,
@@ -224,8 +224,9 @@ async function stepFour(xstsToken:string, userHash:string) {
         }
     });
     //fetch currenty proxy ip
+    const tester = new HttpsProxyAgent('http://dc.smartproxy.com:10000');
     const test = await fetch("https://api.ipify.org?format=json", {
-        agent: agent
+        agent: tester
     });
     const testJson:any = await test.json();
     console.log(testJson.ip)
@@ -241,6 +242,7 @@ async function stepFour(xstsToken:string, userHash:string) {
 }
 
 async function stepFive(bearerToken:string) {
+    const agent = new HttpsProxyAgent('http://dc.smartproxy.com:10000');   
     const url = "https://api.minecraftservices.com/minecraft/profile";
     const res = await fetch(url, {
         headers: {
