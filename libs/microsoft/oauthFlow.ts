@@ -7,6 +7,10 @@ import fetch from 'node-fetch';
 const proxy = "http://dc.smartproxy.com:10000"
 import HttpProxy from 'http-proxy-agent';
 const HttpProxyAgent = HttpProxy.HttpProxyAgent;
+const agent = new HttpProxyAgent({
+    host: 'dc.smartproxy.com',
+    port: 10000,
+});
 
 export default async function oauthFlow(code:string|null, url:string, refresh:boolean, xbl_token?:string, xbl_hash?:string) {
     if (!code && !xbl_token && !xbl_hash) {
@@ -225,7 +229,7 @@ async function stepFour(xstsToken:string, userHash:string) {
     });
     //fetch currenty proxy ip
     const test = await fetch("https://api.ipify.org?format=json", {
-        agent: new HttpProxyAgent(proxy)
+        agent: agent
     });
     const testJson:any = await test.json();
     console.log(testJson.ip)
@@ -246,7 +250,7 @@ async function stepFive(bearerToken:string) {
         headers: {
             'Authorization': `Bearer ${bearerToken}`
         },
-        agent: new HttpProxyAgent(proxy)
+        agent: agent
     });
     const json:any = await res.json();
     if (res.status !== 200) {
