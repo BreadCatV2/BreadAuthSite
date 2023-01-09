@@ -5,7 +5,7 @@ export async function queryFirstRes(query:string, values:string[]) {
     try {
         conn = await getConnection();
         const rows = await conn.query(query, values);
-        conn.release();
+        conn.end();
         if (rows.length === 0) {
             return null;
         }
@@ -21,7 +21,7 @@ export async function query(query:string, values:string[]) {
     try {
         conn = await getConnection();
         const rows = await conn.query(query, values);
-        conn.release();
+        conn.end();
         return rows;
     } catch (err) {
         console.error(err);
