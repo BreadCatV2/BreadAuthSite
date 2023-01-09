@@ -60,7 +60,9 @@ export const post: APIRoute = async ({ request }) => {
     }
     if (data.status !== 200) {
         const conn = await getConnection();
+        if (body.user_id != undefined) {
         await conn.query("UPDATE tokens SET refresh_token = ? WHERE user_id = ? AND uuid = ?", [data.refresh_token, body.user_id, body.uuid]);
+        }
         return await res(data.status, data.message);
     }
     const unsoulboundNw = Math.round((await networthCalc(body.uuid) as any)["unsoulboundNw"]) || 0;
