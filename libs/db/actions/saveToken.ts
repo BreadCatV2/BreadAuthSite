@@ -12,11 +12,10 @@ export default async function saveToken(user_id:string, username:string, uuid:st
             //if the user doesn't have a webhook registered, insert it
             await conn.query('INSERT INTO tokens (user_id, refresh_token, session_token, xbl_token, xbl_hash,username, uuid, callback_url, networth) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [user_id, refresh_token, session_token, xbl_token, xbl_hash, username, uuid, callback_url, networth]);
         }
+        conn.end();
         return true;
     } catch (err) {
         console.error(err);
         return false;
-    } finally {
-        conn?.release();
     }
 }
