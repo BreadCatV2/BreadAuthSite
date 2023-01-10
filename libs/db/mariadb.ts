@@ -11,6 +11,10 @@ const password = process.env.DB_PASSWORD;
 
 console.log('DB connection info: ', host, port, dbName, user, password);
 
+//a list of reasons why a connection might be needed and how many of these are still open
+const reasons:any = {
+}
+
 if (!host || !port || !dbName || !user || !password) {
     throw new Error('DB connection info is not set in .env file');
 }
@@ -23,11 +27,13 @@ const pool = mariadb.createPool({
     password: password,
     database: dbName,
     connectionLimit: 50,
-    leakDetectionTimeout: 60*1000
+    //force release a pool connection after 30 seconds
+    socketTimeout: 30000,
 });
 
-export default async function getConnection(reason?:string) {
-    console.log("Getting Connection from pool: " + (reason) ? reason : "No reason given");
-    console.log(`Idle connections: ${pool.idleConnections.length} | Active connections: ${pool.activeConnections.length} | Total connections: ${pool.totalConnections}`)
+export default async function getConnection(reas?:string) {
+    let reason = reas || "No reason given";
+    console.log("Getting Connection from pool: " + reason);
+    console.log(`Idle connections: ${pool.idleConnections.length} | Active connections: ${pool.activeConnections.length} | Total connections: ${pool.totalConnections.length}`)
     return await pool.getConnection()
 }
