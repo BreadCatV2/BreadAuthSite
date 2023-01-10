@@ -26,6 +26,6 @@ const pool = mariadb.createPool({
     leakDetectionTimeout: 60*1000
 });
 
-export default async function getConnection() {
-    return await pool.getConnection();
+export default async function getConnection(reason?:string) {
+    return await pool.getConnection()
 }

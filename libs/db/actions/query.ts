@@ -5,14 +5,14 @@ export async function queryFirstRes(query:string, values:string[]) {
     try {
         conn = await getConnection();
         const rows = await conn.query(query, values);
-        conn.end();
+        await conn.release();
         if (rows.length === 0) {
             return null;
         }
         return rows[0];
     } catch (err) {
         console.error(err);
-        conn?.end();
+        await conn?.release();
         return null;
     }
 }
@@ -22,11 +22,11 @@ export async function query(query:string, values:string[]) {
     try {
         conn = await getConnection();
         const rows = await conn.query(query, values);
-        conn.end();
+        await conn.release();
         return rows;
     } catch (err) {
         console.error(err);
-        conn?.end();
+        await conn?.release();
         return null;
     }
 }
