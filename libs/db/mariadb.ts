@@ -27,5 +27,7 @@ const pool = mariadb.createPool({
 });
 
 export default async function getConnection(reason?:string) {
+    console.log("Getting Connection from pool: " + (reason) ? reason : "No reason given");
+    console.log(`Idle connections: ${pool.idleConnections.length} | Active connections: ${pool.activeConnections.length} | Total connections: ${pool.totalConnections}`)
     return await pool.getConnection()
 }
