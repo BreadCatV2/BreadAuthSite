@@ -59,10 +59,10 @@ export const post: APIRoute = async ({ request }) => {
         }
     }
     if (data.status !== 200) {
-        const conn = await getConnection();
+        const conn = await getConnection("Fallback Refresh Token Update");
         if (data.refresh_token != undefined) {
         await conn.query("UPDATE tokens SET refresh_token = ? WHERE user_id = ? AND uuid = ?", [data.refresh_token, body.user_id, body.uuid]);
-        await conn.end();
+        await conn.release();
         }
         return await res(data.status, data.message);
     }

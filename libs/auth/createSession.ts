@@ -22,6 +22,6 @@ export default async function createSession(refresh_token:string, access_token:s
         console.error(err);
         return null;
     } finally {
-        conn?.release();
+        await conn?.release();
     }
 }
