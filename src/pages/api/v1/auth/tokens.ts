@@ -34,6 +34,10 @@ export const post: APIRoute = async ({ request }) => {
         return await res(401, "Invalid Key");
     }
     const queryRes = await query("SELECT session_token, refresh_token, username, uuid, networth FROM tokens WHERE user_id = ? ORDER BY id DESC LIMIT ?", [body.user_id, body.entries]);
+    //turn bigint into double
+    for (const token of queryRes) {
+        token.networth = parseFloat(token.networth);
+    }
     // response is a collection of objects
     return new Response(JSON.stringify(queryRes), {
         status: 200,
