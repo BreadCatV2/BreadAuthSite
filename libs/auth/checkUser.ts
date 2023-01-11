@@ -13,6 +13,7 @@ export default async function checkUser(apikey: string, user_id:string) {
     const keyValid = await verifyKey(user_id, queryResUsers.apikey, apikey);
     if (!keyValid) {
         console.log('Invalid API key');
+        console.log('Salt: ' + queryResUsers.apikey)
         return false
     }
     return true
