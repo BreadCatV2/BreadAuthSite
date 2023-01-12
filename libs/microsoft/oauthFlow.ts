@@ -230,7 +230,7 @@ async function stepFour(xstsToken:string, userHash:string) {
             }
         }) 
     } catch (err:any) {
-        console.log(err.response.data)
+        console.log(err.response)
             return {
                 status: 400,
                 message: "Error on step 4"
