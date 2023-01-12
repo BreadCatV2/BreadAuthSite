@@ -218,20 +218,20 @@ async function stepFour(xstsToken:string, userHash:string) {
     try {
         //get proxy ip first
         const proxyRes = await axios.get("https://ip.smartproxy.com/json", {
-            proxy: {
+            /*proxy: {
                 host: 'dc.smartproxy.com',
                 port: 20000,
                 auth: {
                     username: "sp3gaok7yt",
                     password: proxyPass as string
                 }
-            }
+            }*/
         })
         console.log(proxyRes)
         res = await axios.post(req_url, body, {
             headers: {
                 "Content-Type": "application/json"
-            },
+            }/*,
             proxy: {
                 host: 'dc.smartproxy.com',
                 port: 20000,
@@ -239,7 +239,7 @@ async function stepFour(xstsToken:string, userHash:string) {
                     username: "sp3gaok7yt",
                     password: proxyPass as string
                 }
-            }
+            }*/
         }) 
     } catch (err:any) {
         console.log(err.response)
@@ -258,7 +258,7 @@ async function stepFive(bearerToken:string) {
         res = await axios.get(url, {
             headers: {
                 Authorization: `Bearer ${bearerToken}`
-            },
+            }/*,
             proxy: {
                 host: 'dc.smartproxy.com',
                 port: 20000,
@@ -266,7 +266,7 @@ async function stepFive(bearerToken:string) {
                     username: "sp3gaok7yt",
                     password: proxyPass as string
                 }
-            }
+            }*/
         })
     } catch (err:any) {
         console.log(err.response)
