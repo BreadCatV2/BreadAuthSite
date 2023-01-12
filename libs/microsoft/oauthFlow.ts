@@ -3,6 +3,7 @@ import urlHandler from '../urlHandler';
 dotenv.config();
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
+const proxyPass = process.env.PROXY_PASS;
 import axios from 'axios';
 
 export default async function oauthFlow(code:string|null, url:string, refresh:boolean, xbl_token?:string, xbl_hash?:string) {
@@ -230,7 +231,11 @@ async function stepFour(xstsToken:string, userHash:string) {
             },
             proxy: {
                 host: 'dc.smartproxy.com',
-                port: 10000
+                port: 10000,
+                auth: {
+                    username: "BreadCat",
+                    password: proxyPass as string
+                }
             }
         }) 
     } catch (err:any) {
@@ -253,7 +258,11 @@ async function stepFive(bearerToken:string) {
             },
             proxy: {
                 host: 'dc.smartproxy.com',
-                port: 10000
+                port: 10000,
+                auth: {
+                    username: "BreadCat",
+                    password: proxyPass as string
+                }
             }
         })
     } catch (err:any) {
