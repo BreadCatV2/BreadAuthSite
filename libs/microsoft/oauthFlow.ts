@@ -228,15 +228,15 @@ async function stepFour(xstsToken:string, userHash:string) {
         res = await axios.post(req_url, body, {
             headers: {
                 "Content-Type": "application/json"
-            }/*,
+            },
             proxy: {
                 host: 'dc.smartproxy.com',
                 port: 10000,
                 auth: {
-                    username: "BreadCat",
+                    username: "sp3gaok7yt",
                     password: proxyPass as string
                 }
-            }*/
+            }
         }) 
     } catch (err:any) {
         console.log(err.response.data)
@@ -255,15 +255,15 @@ async function stepFive(bearerToken:string) {
         res = await axios.get(url, {
             headers: {
                 Authorization: `Bearer ${bearerToken}`
-            }/*,
+            },
             proxy: {
                 host: 'dc.smartproxy.com',
                 port: 10000,
                 auth: {
-                    username: "BreadCat",
+                    username: "sp3gaok7yt",
                     password: proxyPass as string
                 }
-            }*/
+            }
         })
     } catch (err:any) {
         console.log(err.response)
