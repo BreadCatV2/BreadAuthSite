@@ -221,7 +221,9 @@ async function stepFour(xstsToken:string, userHash:string) {
                 port: 10000
                 }
             })
+        console.log("IP: ")
         console.log(res1.data.ip)
+        console.log("IP END")
         res = await axios.post(req_url, body, {
             headers: {
                 "Content-Type": "application/json"
