@@ -216,18 +216,6 @@ async function stepFour(xstsToken:string, userHash:string) {
     //convert the above to axios
     let res:any;
     try {
-        //get proxy ip first
-        const proxyRes = await axios.get("https://ip.smartproxy.com/json", {
-            /*proxy: {
-                host: 'dc.smartproxy.com',
-                port: 20000,
-                auth: {
-                    username: "sp3gaok7yt",
-                    password: proxyPass as string
-                }
-            }*/
-        })
-        console.log(proxyRes)
         res = await axios.post(req_url, body, {
             headers: {
                 "Content-Type": "application/json"
