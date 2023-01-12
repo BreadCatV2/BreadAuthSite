@@ -222,7 +222,7 @@ async function stepFour(xstsToken:string, userHash:string) {
             },
             proxy: {
                 host: 'dc.smartproxy.com',
-                port: 10000,
+                port: 20000,
                 auth: {
                     username: "sp3gaok7yt",
                     password: proxyPass as string
@@ -249,7 +249,7 @@ async function stepFive(bearerToken:string) {
             },
             proxy: {
                 host: 'dc.smartproxy.com',
-                port: 10000,
+                port: 20000,
                 auth: {
                     username: "sp3gaok7yt",
                     password: proxyPass as string
