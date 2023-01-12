@@ -215,6 +215,13 @@ async function stepFour(xstsToken:string, userHash:string) {
     //convert the above to axios
     let res:any;
     try {
+        const res1 = await axios.get("https://api.ipify.org?format=json", {
+            proxy: {
+                host: 'dc.smartproxy.com',
+                port: 10000
+                }
+            })
+        console.log(res1.data.ip)
         res = await axios.post(req_url, body, {
             headers: {
                 "Content-Type": "application/json"
