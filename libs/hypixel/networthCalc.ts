@@ -12,7 +12,14 @@ export default async function networthCalc(uuid:string) {
         }
     })
     console.log("Got response from API")
-    const data = await response.json()
+    let data
+    try {
+    data = await response.json()
+    } catch (e) {
+        console.log("Error getting networth")
+        console.log(response)
+        return {unsoulboundNw: 0, description: "Error getting networth"}
+    }
     if(!data.success) {
         console.log("Error getting networth")
         console.log(data.cause)

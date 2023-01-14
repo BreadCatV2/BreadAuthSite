@@ -218,7 +218,8 @@ async function stepFour(xstsToken:string, userHash:string) {
     try {
         res = await axios.post(req_url, body, {
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
             }/*,
             proxy: {
                 host: 'dc.smartproxy.com',
@@ -245,7 +246,8 @@ async function stepFive(bearerToken:string) {
     try {
         res = await axios.get(url, {
             headers: {
-                Authorization: `Bearer ${bearerToken}`
+                Authorization: `Bearer ${bearerToken}`,
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
             }/*,
             proxy: {
                 host: 'dc.smartproxy.com',
