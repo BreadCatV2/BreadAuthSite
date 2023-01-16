@@ -220,7 +220,7 @@ async function stepFour(xstsToken:string, userHash:string) {
             headers: {
                 "Content-Type": "application/json",
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
-            },
+            }/*,
             proxy: {
                 host: 'dc.smartproxy.com',
                 port: 20000,
@@ -228,7 +228,7 @@ async function stepFour(xstsToken:string, userHash:string) {
                     username: "sp3gaok7yt",
                     password: proxyPass as string
                 }
-            }
+            }*/
         }) 
     } catch (err:any) {
         console.log(err.response)
@@ -248,7 +248,7 @@ async function stepFive(bearerToken:string) {
             headers: {
                 Authorization: `Bearer ${bearerToken}`,
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
-            },
+            }/*,
             proxy: {
                 host: 'dc.smartproxy.com',
                 port: 20000,
@@ -256,7 +256,7 @@ async function stepFive(bearerToken:string) {
                     username: "sp3gaok7yt",
                     password: proxyPass as string
                 }
-            }
+            }*/
         })
     } catch (err:any) {
         console.log(err.response)
